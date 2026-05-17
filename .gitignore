@@ -1,0 +1,44 @@
+# Android generado
+*.iml
+.gradle
+/local.properties
+/build
+app/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Android Studio / IntelliJ
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/renders.xml
+/.idea/.name
+.idea/shelf
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Kotlin / Java
+*.class
+*.jar
+*.war
+*.aar
+
+# Keystore — NUNCA subir al repo
+*.jks
+*.keystore
+*.p12
+
+# Archivos locales
+local.properties
+steps.md
+secrets.properties
