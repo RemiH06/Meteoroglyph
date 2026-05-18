@@ -24,9 +24,9 @@ enum class ChipState { OK, WARN, DANGER, NEUTRAL }
 
 @Composable
 fun StatusChip(
-    label: String,
+    modifier: Modifier = Modifier,
     state: ChipState = ChipState.NEUTRAL,
-    modifier: Modifier = Modifier
+    label: String
 ) {
     val (bg, fg, border) = when (state) {
         ChipState.OK      -> Triple(GreenSurface, AccentGreen, AccentGreen.copy(alpha = 0.3f))
