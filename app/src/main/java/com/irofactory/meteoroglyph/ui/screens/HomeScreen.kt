@@ -88,7 +88,7 @@ fun HomeScreen(vm: HomeViewModel = viewModel()) {
 
                 OutfitChips(
                     glyphRepo = glyphRepo,
-                    items     = placeholderOutfit()   // después vendrá del OutfitEngine
+                    items     = uiState.outfitItems
                 )
             }
         }
@@ -114,17 +114,6 @@ private fun conditionLabel(weather: WeatherState): String = when (weather.condit
     WeatherCondition.HOT                 -> "calor extremo"
     WeatherCondition.COLD                -> "frío"
 }
-
-// Placeholder — lo reemplazará OutfitEngine
-private fun placeholderOutfit() = listOf(
-    OutfitItem("camisa ligera",  "clothes",     "top_shirt",     OutfitItemState.RECOMMENDED),
-    OutfitItem("pantalón largo", "clothes",     "bottom_pants",  OutfitItemState.RECOMMENDED),
-    OutfitItem("tenis",          "clothes",     "shoe_sneaker",  OutfitItemState.RECOMMENDED),
-    OutfitItem("paraguas",       "accessories", "umbrella",      OutfitItemState.CONDITIONAL, "lluvia 14:00"),
-    OutfitItem("short",          "clothes",     "bottom_shorts", OutfitItemState.BLOCKED,     "lluvia"),
-    OutfitItem("sandalias",      "clothes",     "shoe_sandal",   OutfitItemState.BLOCKED,     "lluvia"),
-    OutfitItem("lentes de sol",  "accessories", "sunglasses",    OutfitItemState.NEUTRAL),
-)
 
 @Composable
 private fun AppHeader() {

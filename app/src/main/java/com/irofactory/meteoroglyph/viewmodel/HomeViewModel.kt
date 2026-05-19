@@ -12,12 +12,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.irofactory.meteoroglyph.data.outfit.OutfitEngine
+import com.irofactory.meteoroglyph.data.outfit.TransitRecommendation
+import com.irofactory.meteoroglyph.ui.components.OutfitItem
 
 data class HomeUiState(
-    val isLoading: Boolean           = true,
-    val weather: WeatherState?       = null,
-    val nextEvent: CalendarEvent?    = null,
-    val error: String?               = null
+    val isLoading: Boolean                  = true,
+    val weather: WeatherState?              = null,
+    val nextEvent: CalendarEvent?           = null,
+    val outfitItems: List<OutfitItem>       = emptyList(),
+    val transitRec: TransitRecommendation   = TransitRecommendation.PUBLIC_OK,
+    val error: String?                      = null
 )
 
 class HomeViewModel(app: Application) : AndroidViewModel(app) {
@@ -34,22 +39,21 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-            // Clima
             val weatherResult = weatherRepo.getWeather()
-            val weather = weatherResult.getOrNull()
-            val error   = if (weatherResult.isFailure)
-                "No se pudo obtener el clima" else null
-
-            // Calendario
-            val nextEvent = try {
-                calendarRepo.getNextEvent()
-            } catch (e: Exception) { null }
+            val weather       = weatherResult.getOrNull()
+            val error         = if (weatherResult.isFailure) "No se pudo obtener el clima" else null
+            val nextEvent     = try { calendarRepo.getNextEvent() } catch (e: Exception) { null }
+            val outfitItems   = weather?.let { OutfitEngine.recommend(it) } ?: emptyList()
+            val transitRec    = weather?.let { OutfitEngine.recommendTransit(it) }
+                ?: TransitRecommendation.PUBLIC_OK
 
             _uiState.value = HomeUiState(
-                isLoading  = false,
-                weather    = weather,
-                nextEvent  = nextEvent,
-                error      = error
+                isLoading    = false,
+                weather      = weather,
+                nextEvent    = nextEvent,
+                outfitItems  = outfitItems,
+                transitRec   = transitRec,
+                error        = error
             )
         }
     }
