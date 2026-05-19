@@ -1,0 +1,811 @@
+{
+  "meta": {
+    "version": "1.0",
+    "app": "GlyphFactory",
+    "exportedAt": "2026-05-18T22:21:40.559Z",
+    "palette": [
+      {
+        "name": "verde",
+        "hex": "#00e5a0"
+      },
+      {
+        "name": "ámbar",
+        "hex": "#f5a623"
+      },
+      {
+        "name": "rojo",
+        "hex": "#ff4560"
+      },
+      {
+        "name": "azul",
+        "hex": "#457BFF"
+      },
+      {
+        "name": "púrpura",
+        "hex": "#9B6DFF"
+      },
+      {
+        "name": "naranja",
+        "hex": "#FF7A30"
+      },
+      {
+        "name": "blanco",
+        "hex": "#f0f0f0"
+      },
+      {
+        "name": "gris cl",
+        "hex": "#888888"
+      },
+      {
+        "name": "gris",
+        "hex": "#444444"
+      }
+    ]
+  },
+  "glyphs": {
+    "ui::check": {
+      "id": "ui::check",
+      "name": "check",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          0
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          0,
+          null
+        ],
+        [
+          0,
+          null,
+          null,
+          null,
+          0,
+          null,
+          null
+        ],
+        [
+          null,
+          0,
+          null,
+          0,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:10:48.409Z"
+    },
+    "ui::close": {
+      "id": "ui::close",
+      "name": "close",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          2,
+          null,
+          null,
+          null,
+          2,
+          null
+        ],
+        [
+          null,
+          null,
+          2,
+          null,
+          2,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          2,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          2,
+          null,
+          2,
+          null,
+          null
+        ],
+        [
+          null,
+          2,
+          null,
+          null,
+          null,
+          2,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:11:15.867Z"
+    },
+    "ui::warning": {
+      "id": "ui::warning",
+      "name": "warning",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:11:41.944Z"
+    },
+    "ui::arrow_right": {
+      "id": "ui::arrow_right",
+      "name": "arrow_right",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          null,
+          3,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          3,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          3,
+          null
+        ],
+        [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          3,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          3,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          3,
+          null,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:12:00.209Z"
+    },
+    "ui::clock": {
+      "id": "ui::clock",
+      "name": "clock",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          4,
+          4,
+          4,
+          null,
+          null
+        ],
+        [
+          null,
+          4,
+          null,
+          {
+            "custom": "#563f88"
+          },
+          null,
+          4,
+          null
+        ],
+        [
+          4,
+          null,
+          null,
+          {
+            "custom": "#563f88"
+          },
+          null,
+          null,
+          4
+        ],
+        [
+          4,
+          null,
+          null,
+          4,
+          {
+            "custom": "#563f88"
+          },
+          {
+            "custom": "#563f88"
+          },
+          4
+        ],
+        [
+          4,
+          null,
+          null,
+          null,
+          null,
+          null,
+          4
+        ],
+        [
+          null,
+          4,
+          null,
+          null,
+          null,
+          4,
+          null
+        ],
+        [
+          null,
+          null,
+          4,
+          4,
+          4,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:13:07.479Z"
+    },
+    "ui::pin": {
+      "id": "ui::pin",
+      "name": "pin",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          2,
+          2,
+          2,
+          null,
+          null
+        ],
+        [
+          null,
+          2,
+          2,
+          2,
+          2,
+          2,
+          null
+        ],
+        [
+          null,
+          2,
+          2,
+          6,
+          2,
+          2,
+          null
+        ],
+        [
+          null,
+          2,
+          2,
+          2,
+          2,
+          2,
+          null
+        ],
+        [
+          null,
+          null,
+          2,
+          2,
+          2,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          2,
+          null,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:15:20.292Z"
+    },
+    "ui::calendar": {
+      "id": "ui::calendar",
+      "name": "calendar",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        [
+          6,
+          6,
+          8,
+          6,
+          8,
+          6,
+          6
+        ],
+        [
+          6,
+          6,
+          8,
+          6,
+          8,
+          6,
+          6
+        ],
+        [
+          6,
+          6,
+          8,
+          6,
+          8,
+          6,
+          6
+        ],
+        [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:17:18.931Z"
+    },
+    "ui::settings": {
+      "id": "ui::settings",
+      "name": "settings",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          8,
+          null,
+          null,
+          8,
+          null,
+          null,
+          8
+        ],
+        [
+          null,
+          8,
+          null,
+          8,
+          null,
+          8,
+          null
+        ],
+        [
+          null,
+          null,
+          8,
+          8,
+          8,
+          null,
+          null
+        ],
+        [
+          8,
+          8,
+          8,
+          null,
+          8,
+          8,
+          8
+        ],
+        [
+          null,
+          null,
+          8,
+          8,
+          8,
+          null,
+          null
+        ],
+        [
+          null,
+          8,
+          null,
+          8,
+          null,
+          8,
+          null
+        ],
+        [
+          8,
+          null,
+          null,
+          8,
+          null,
+          null,
+          8
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:19:44.744Z"
+    },
+    "ui::bell": {
+      "id": "ui::bell",
+      "name": "bell",
+      "category": "ui",
+      "cols": 7,
+      "rows": 7,
+      "palette": [
+        "#00e5a0",
+        "#f5a623",
+        "#ff4560",
+        "#457BFF",
+        "#9B6DFF",
+        "#FF7A30",
+        "#f0f0f0",
+        "#888888",
+        "#444444"
+      ],
+      "data": [
+        [
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          null
+        ],
+        [
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ],
+        [
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "updatedAt": "2026-05-18T22:21:36.655Z"
+    }
+  }
+}
