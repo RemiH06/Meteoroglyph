@@ -27,7 +27,10 @@ data class AppSettings(
 
     // ── Notificaciones ────────────────────────────────────────────────────────
     val notificationHour: Int       = 7,
-    val notificationMinute: Int     = 0
+    val notificationMinute: Int     = 0,
+
+    // ── Tema ──────────────────────────────────────────────────────────────────
+    val themeMode: String = "SYSTEM"  // "SYSTEM" | "DARK" | "LIGHT"
 )
 
 data class Location(

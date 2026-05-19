@@ -66,6 +66,8 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
         s.copy(calendarKeywords = s.calendarKeywords.toMutableList().also { it.removeAt(index) })
     }
 
+    fun setThemeMode(mode: String) = save { it.copy(themeMode = mode) }
+
     private fun save(transform: (AppSettings) -> AppSettings) {
         viewModelScope.launch {
             repo.save(transform(settings.value))

@@ -31,6 +31,7 @@ class SettingsRepository(private val context: Context) {
         val UBER_RAIN_THRESHOLD  = intPreferencesKey("uber_rain_threshold")
         val NOTIF_HOUR           = intPreferencesKey("notif_hour")
         val NOTIF_MINUTE         = intPreferencesKey("notif_minute")
+        val THEME_MODE           = stringPreferencesKey("theme_mode")
     }
 
     val settings: Flow<AppSettings> = context.dataStore.data.map { prefs ->
@@ -48,7 +49,8 @@ class SettingsRepository(private val context: Context) {
             windThresholdKmh = prefs[Keys.WIND_THRESHOLD]    ?: 35,
             uberRainThresholdPct = prefs[Keys.UBER_RAIN_THRESHOLD] ?: 60,
             notificationHour   = prefs[Keys.NOTIF_HOUR]     ?: 7,
-            notificationMinute = prefs[Keys.NOTIF_MINUTE]   ?: 0
+            notificationMinute = prefs[Keys.NOTIF_MINUTE]   ?: 0,
+            themeMode = prefs[Keys.THEME_MODE] ?: "SYSTEM"
         )
     }
 
@@ -68,6 +70,7 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.UBER_RAIN_THRESHOLD] = settings.uberRainThresholdPct
             prefs[Keys.NOTIF_HOUR]          = settings.notificationHour
             prefs[Keys.NOTIF_MINUTE]        = settings.notificationMinute
+            prefs[Keys.THEME_MODE]          = settings.themeMode
         }
     }
 

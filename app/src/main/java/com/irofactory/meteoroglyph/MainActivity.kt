@@ -10,19 +10,35 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.irofactory.meteoroglyph.data.settings.AppSettings
+import com.irofactory.meteoroglyph.data.settings.SettingsRepository
+import com.irofactory.meteoroglyph.ui.navigation.NavGraph
 import com.irofactory.meteoroglyph.ui.screens.HomeScreen
 import com.irofactory.meteoroglyph.ui.theme.MeteoroglyphTheme
+import com.irofactory.meteoroglyph.ui.theme.ThemeMode
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MeteoroglyphTheme {
+            val settingsRepo = remember { SettingsRepository(this@MainActivity) }
+            val settingsState = settingsRepo.settings.collectAsStateWithLifecycle(
+                initialValue  = AppSettings(),
+                lifecycle     = this@MainActivity.lifecycle
+            )
+            val themeMode = when (settingsState.value.themeMode) {
+                "DARK"  -> ThemeMode.DARK
+                "LIGHT" -> ThemeMode.LIGHT
+                else    -> ThemeMode.SYSTEM
+            }
+            MeteoroglyphTheme(themeMode = themeMode) {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    HomeScreen()
+                    NavGraph()
                 }
             }
         }

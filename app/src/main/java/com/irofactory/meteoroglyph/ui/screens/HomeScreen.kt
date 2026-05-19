@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -27,7 +28,10 @@ import com.irofactory.meteoroglyph.viewmodel.HomeViewModel
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun HomeScreen(vm: HomeViewModel = viewModel()) {
+fun HomeScreen(
+    onNavigateToSettings: () -> Unit = {},
+    vm: HomeViewModel = viewModel()
+) {
     val context   = LocalContext.current
     val uiState   by vm.uiState.collectAsStateWithLifecycle()
     val glyphRepo = remember { GlyphRepository(context) }
@@ -49,7 +53,10 @@ fun HomeScreen(vm: HomeViewModel = viewModel()) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        AppHeader()
+        AppHeader(
+            onSettingsClick = onNavigateToSettings,
+            glyphRepo       = glyphRepo
+        )
 
         when {
             uiState.isLoading -> {
@@ -116,16 +123,38 @@ private fun conditionLabel(weather: WeatherState): String = when (weather.condit
 }
 
 @Composable
-private fun AppHeader() {
+private fun AppHeader(
+    onSettingsClick: () -> Unit,
+    glyphRepo: GlyphRepository
+) {
+    val settingsGlyph = remember { glyphRepo.getGlyph("ui", "settings") }
+
     Column(modifier = Modifier.padding(top = 16.dp)) {
-        Row {
-            Text(text = "meteoro", fontFamily = SpaceMono, fontSize = 20.sp, color = Color(0xFFF0F0F0))
-            Text(text = "glyph",   fontFamily = SpaceMono, fontSize = 20.sp, color = AccentGreen)
+        Row(
+            modifier              = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment     = Alignment.CenterVertically
+        ) {
+            Column {
+                Row {
+                    Text("meteoro", fontFamily = SpaceMono, fontSize = 20.sp, color = Color(0xFFF0F0F0))
+                    Text("glyph",   fontFamily = SpaceMono, fontSize = 20.sp, color = AccentGreen)
+                }
+                Text(
+                    text  = "OUTFIT · CLIMATE · TRANSIT",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TextSecondary
+                )
+            }
+            if (settingsGlyph != null) {
+                IconButton(onClick = onSettingsClick) {
+                    GlyphRenderer(
+                        glyph    = settingsGlyph,
+                        tint     = TextSecondary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
         }
-        Text(
-            text  = "OUTFIT · CLIMATE · TRANSIT",
-            style = MaterialTheme.typography.labelSmall,
-            color = TextSecondary
-        )
     }
 }
