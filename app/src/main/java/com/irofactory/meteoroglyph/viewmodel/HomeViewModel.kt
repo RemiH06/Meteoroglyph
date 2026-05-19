@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.irofactory.meteoroglyph.data.outfit.OutfitEngine
 import com.irofactory.meteoroglyph.data.outfit.TransitRecommendation
+import com.irofactory.meteoroglyph.data.settings.SettingsRepository
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
 
 data class HomeUiState(
@@ -29,17 +30,24 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
 
     private val weatherRepo  = WeatherRepository()
     private val calendarRepo = CalendarRepository(app)
+    private val settingsRepo = SettingsRepository(app)
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    init { refresh() }
+    init {
+        viewModelScope.launch {
+            settingsRepo.settings.collect { settings ->
+                refresh(settings.homeLat, settings.homeLon)
+            }
+        }
+    }
 
-    fun refresh() {
+    fun refresh(lat: Double = 20.6597, lon: Double = -103.3496) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-            val weatherResult = weatherRepo.getWeather()
+            val weatherResult = weatherRepo.getWeather(lat, lon)
             val weather       = weatherResult.getOrNull()
             val error         = if (weatherResult.isFailure) "No se pudo obtener el clima" else null
             val nextEvent     = try { calendarRepo.getNextEvent() } catch (e: Exception) { null }
@@ -48,12 +56,12 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 ?: TransitRecommendation.PUBLIC_OK
 
             _uiState.value = HomeUiState(
-                isLoading    = false,
-                weather      = weather,
-                nextEvent    = nextEvent,
-                outfitItems  = outfitItems,
-                transitRec   = transitRec,
-                error        = error
+                isLoading   = false,
+                weather     = weather,
+                nextEvent   = nextEvent,
+                outfitItems = outfitItems,
+                transitRec  = transitRec,
+                error       = error
             )
         }
     }
