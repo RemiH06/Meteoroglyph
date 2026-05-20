@@ -30,7 +30,15 @@ data class AppSettings(
     val notificationMinute: Int     = 0,
 
     // ── Tema ──────────────────────────────────────────────────────────────────
-    val themeMode: String = "SYSTEM"  // "SYSTEM" | "DARK" | "LIGHT"
+    val themeMode: String = "SYSTEM",  // "SYSTEM" | "DARK" | "LIGHT"
+
+    // ── Simulación de fluido ──────────────────────────────────────────────────
+    val fluidFillRatio:       Float = 0.30f,
+    val fluidViscosity:       Float = 0.50f,
+    val fluidStiffness:       Float = 1.00f,
+    val fluidRestitution:     Float = 0.40f,
+    val fluidSmoothingRadius: Float = 2.50f,
+    val fluidParticleCount:   Int   = 80
 )
 
 data class Location(

@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +21,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.irofactory.meteoroglyph.data.glyph.GlyphRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherCondition
 import com.irofactory.meteoroglyph.data.weather.WeatherState
+import com.irofactory.meteoroglyph.fluid.FluidGlyphController
+import com.irofactory.meteoroglyph.fluid.FluidMatrixView
+import com.irofactory.meteoroglyph.fluid.FluidParams
 import com.irofactory.meteoroglyph.ui.components.*
 import com.irofactory.meteoroglyph.ui.theme.*
 import com.irofactory.meteoroglyph.viewmodel.HomeViewModel
@@ -37,7 +39,18 @@ fun HomeScreen(
     val glyphRepo = remember { GlyphRepository(context) }
     val mc        = metroColors
 
-    // Pedir permiso de calendario
+    // ── Estado del fluido ─────────────────────────────────────────────────────
+    var glyphFluidActive by remember { mutableStateOf(false) }
+    val fluidGlyphController = remember { FluidGlyphController(context) }
+
+    // Limpiar al salir de la pantalla
+    DisposableEffect(Unit) {
+        onDispose {
+            if (glyphFluidActive) fluidGlyphController.stop()
+        }
+    }
+
+    // ── Permisos ──────────────────────────────────────────────────────────────
     val calendarPermission = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { vm.refresh() }
@@ -52,10 +65,6 @@ fun HomeScreen(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         ))
-    }
-
-    LaunchedEffect(Unit) {
-        calendarPermission.launch(Manifest.permission.READ_CALENDAR)
     }
 
     Column(
@@ -113,6 +122,30 @@ fun HomeScreen(
                 )
             }
         }
+
+        // ── Fluid Matrix — siempre visible, centrada ──────────────────────────
+        Box(
+            modifier         = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            val fluidParams = uiState.fluidParams
+            FluidMatrixView(
+                params        = fluidParams,
+                glyphActive   = glyphFluidActive,
+                onToggleGlyph = {
+                    glyphFluidActive = !glyphFluidActive
+                    if (glyphFluidActive) {
+                        fluidGlyphController.start(fluidParams)
+                    } else {
+                        fluidGlyphController.stop()
+                    }
+                }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

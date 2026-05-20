@@ -279,7 +279,32 @@ fun SettingsScreen(
             MetroButton("detener") { glyphController.stopPattern() }
         }
 
-        Spacer(Modifier.height(32.dp))
+        // ── Simulación de fluido ──────────────────────────────────────────────────
+        SettingsSection(title = "SIMULACIÓN DE FLUIDO") {
+            val mc = metroColors
+            Text(
+                text       = "Parámetros de la simulación en pantalla y Glyph",
+                fontFamily = SpaceMono,
+                fontSize   = 9.sp,
+                color      = mc.textSecondary
+            )
+            Spacer(Modifier.height(4.dp))
+
+            ThresholdRow("Llenado (%)", (settings.fluidFillRatio * 100).toInt(), 10, 200,
+                mc.blue, null, mc.blue) { vm.setFluidFillRatio(it / 100f) }
+            ThresholdRow("Viscosidad",       (settings.fluidViscosity * 100).toInt(),        1, 200,
+                mc.purple,  null, mc.purple)  { vm.setFluidViscosity(it / 100f) }
+            ThresholdRow("Rigidez",          (settings.fluidStiffness * 100).toInt(),       10, 500,
+                mc.warn,    null, mc.warn)    { vm.setFluidStiffness(it / 100f) }
+            ThresholdRow("Rebote (%)",       (settings.fluidRestitution * 100).toInt(),      0, 100,
+                mc.accent,  null, mc.accent)  { vm.setFluidRestitution(it / 100f) }
+            ThresholdRow("Radio suavizado",  (settings.fluidSmoothingRadius * 10).toInt(),  10, 50,
+                mc.orange,  null, mc.orange)  { vm.setFluidSmoothingRadius(it / 10f) }
+            ThresholdRow("Partículas",       settings.fluidParticleCount,                   10, 200,
+                mc.textPrimary, null, mc.textPrimary) { vm.setFluidParticleCount(it) }
+        }
+
+        Spacer(Modifier.height(64.dp))
     }
 }
 

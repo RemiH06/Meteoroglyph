@@ -12,6 +12,7 @@ import com.irofactory.meteoroglyph.data.settings.AppSettings
 import com.irofactory.meteoroglyph.data.settings.SettingsRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherState
+import com.irofactory.meteoroglyph.fluid.FluidParams
 import com.irofactory.meteoroglyph.glyph.GlyphController
 import com.irofactory.meteoroglyph.icon.IconUpdater
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
@@ -29,6 +30,7 @@ data class HomeUiState(
     val nextEvent: CalendarEvent?         = null,
     val outfitItems: List<OutfitItem>     = emptyList(),
     val transitRec: TransitRecommendation = TransitRecommendation.PUBLIC_OK,
+    val fluidParams: FluidParams          = FluidParams(),
     val error: String?                    = null
 )
 
@@ -98,6 +100,14 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 nextEvent   = nextEvent,
                 outfitItems = outfitItems,
                 transitRec  = transitRec,
+                fluidParams = FluidParams(
+                    fillRatio       = currentSettings.fluidFillRatio,
+                    viscosity       = currentSettings.fluidViscosity,
+                    stiffness       = currentSettings.fluidStiffness,
+                    restitution     = currentSettings.fluidRestitution,
+                    smoothingRadius = currentSettings.fluidSmoothingRadius,
+                    particleCount   = currentSettings.fluidParticleCount
+                ),
                 error       = error
             )
 

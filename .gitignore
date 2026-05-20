@@ -41,4 +41,5 @@ Desktop.ini
 # Archivos locales
 local.properties
 steps.md
+*.paint
 secrets.properties
