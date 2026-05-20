@@ -20,10 +20,15 @@ import com.irofactory.meteoroglyph.ui.components.OutfitItemState
 import kotlinx.coroutines.flow.first
 import java.util.concurrent.TimeUnit
 import android.widget.RemoteViews
+import androidx.glance.appwidget.updateAll
 import com.irofactory.meteoroglyph.data.glyph.GlyphRepository
+import com.irofactory.meteoroglyph.data.weather.WeatherCondition
+import com.irofactory.meteoroglyph.icon.IconUpdater
 import com.irofactory.meteoroglyph.ui.components.GlyphBitmapRenderer
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
 import com.irofactory.meteoroglyph.ui.components.TextBitmapRenderer
+import com.irofactory.meteoroglyph.widget.WeatherInfoWidget
+import com.irofactory.meteoroglyph.widget.WeatherCircleWidget
 import kotlinx.coroutines.runBlocking
 
 class WeatherCheckWorker(
@@ -57,6 +62,15 @@ class WeatherCheckWorker(
             .filter { it.state != OutfitItemState.BLOCKED }
             .take(4), transitRec, nextEvent?.title)
 
+        weather?.let { IconUpdater.update(context, it) }
+
+        // Reprogramar alarmas de eventos del día
+        EventAlarmScheduler.scheduleAll(context, settings)
+
+        // Actualizar widgets
+        WeatherInfoWidget().updateAll(context)
+        WeatherCircleWidget().updateAll(context)
+
         return Result.success()
     }
 
@@ -82,6 +96,26 @@ class WeatherCheckWorker(
         val density = context.resources.displayMetrics.density
         val sizePx  = sizeSp * density
         return TextBitmapRenderer.render(context, text, sizePx, colorArgb, maxWidthPx)
+    }
+
+    private fun smallIconFor(weather: WeatherState): Int = when (weather.condition) {
+        WeatherCondition.SUNNY                                  -> R.drawable.ic_notif_sunny
+        WeatherCondition.CLEAR_NIGHT                            -> R.drawable.ic_notif_clear_night
+        WeatherCondition.PARTLY_CLOUDY,
+        WeatherCondition.MOSTLY_CLOUDY                          -> R.drawable.ic_notif_cloudy_day
+        WeatherCondition.PARTLY_CLOUDY_NIGHT,
+        WeatherCondition.MOSTLY_CLOUDY_NIGHT                    -> R.drawable.ic_notif_cloudy_night
+        WeatherCondition.OVERCAST                               -> R.drawable.ic_notif_overcast
+        WeatherCondition.DRIZZLE,
+        WeatherCondition.RAIN,
+        WeatherCondition.HEAVY_RAIN                             -> R.drawable.ic_notif_rain
+        WeatherCondition.STORM                                  -> R.drawable.ic_notif_storm
+        WeatherCondition.WIND                                   -> R.drawable.ic_notif_wind
+        WeatherCondition.FOG                                    -> R.drawable.ic_notif_fog
+        WeatherCondition.COLD,
+        WeatherCondition.SNOW,
+        WeatherCondition.SLEET                                  -> R.drawable.ic_notif_cold
+        WeatherCondition.HOT                                    -> R.drawable.ic_notif_hot
     }
 
     private fun showNotification(
@@ -203,7 +237,7 @@ class WeatherCheckWorker(
         }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(smallIconFor(weather))
             .setCustomContentView(collapsed)
             .setCustomBigContentView(expanded)
             .setContentIntent(pendingIntent)

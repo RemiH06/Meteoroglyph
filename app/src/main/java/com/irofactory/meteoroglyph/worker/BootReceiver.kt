@@ -20,6 +20,7 @@ class BootReceiver : BroadcastReceiver() {
                 settings.notificationHour,
                 settings.notificationMinute
             )
+            EventAlarmScheduler.scheduleAll(context, settings)
         }
     }
 }

@@ -13,7 +13,10 @@ import com.irofactory.meteoroglyph.data.settings.SettingsRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherState
 import com.irofactory.meteoroglyph.glyph.GlyphController
+import com.irofactory.meteoroglyph.icon.IconUpdater
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
+import com.irofactory.meteoroglyph.worker.EventAlarmScheduler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -98,12 +101,20 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 error       = error
             )
 
+            // Actualizar ícono según clima
+            weather?.let { IconUpdater.update(getApplication(), it) }
+
             // ── Glyph LEDs ────────────────────────────────────────────────────
             // Activa el patrón si hay evento próximo Y el clima no es ideal
             if (nextEvent != null && weather != null) {
                 glyphController?.notifyUpcomingEvent(weather)
             } else {
                 glyphController?.stopPattern()
+            }
+
+            // Programar alarmas de eventos
+            viewModelScope.launch(Dispatchers.IO) {
+                EventAlarmScheduler.scheduleAll(getApplication(), currentSettings)
             }
         }
     }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Meteoroglyph</string>
+    <string name="widget_weather_info_description">Clima y outfit del día</string>
+    <string name="widget_weather_circle_description">Ícono de clima actual</string>
 </resources>
