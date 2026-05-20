@@ -42,6 +42,18 @@ fun HomeScreen(
         ActivityResultContracts.RequestPermission()
     ) { vm.refresh() }
 
+    val locationPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { vm.refresh() }
+
+    LaunchedEffect(Unit) {
+        calendarPermission.launch(Manifest.permission.READ_CALENDAR)
+        locationPermission.launch(arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ))
+    }
+
     LaunchedEffect(Unit) {
         calendarPermission.launch(Manifest.permission.READ_CALENDAR)
     }
