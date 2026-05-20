@@ -1,5 +1,6 @@
 package com.irofactory.meteoroglyph
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,11 +21,34 @@ import com.irofactory.meteoroglyph.ui.navigation.NavGraph
 import com.irofactory.meteoroglyph.ui.screens.HomeScreen
 import com.irofactory.meteoroglyph.ui.theme.MeteoroglyphTheme
 import com.irofactory.meteoroglyph.ui.theme.ThemeMode
+import com.irofactory.meteoroglyph.worker.WeatherCheckWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Pedir permiso de notificaciones
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 0
+            )
+        }
+
+        // Programar worker
+        CoroutineScope(Dispatchers.IO).launch {
+            val settings = SettingsRepository(this@MainActivity).settings.first()
+            WeatherCheckWorker.schedule(
+                this@MainActivity,
+                settings.notificationHour,
+                settings.notificationMinute
+            )
+        }
+
         setContent {
             val settingsRepo = remember { SettingsRepository(this@MainActivity) }
             val settingsState = settingsRepo.settings.collectAsStateWithLifecycle(

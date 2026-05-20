@@ -188,8 +188,9 @@ fun SettingsScreen(
         // ── Notificación diaria ───────────────────────────────────────────────
         SettingsSection(title = "NOTIFICACIÓN DIARIA") {
             val mc = metroColors
-            var hour   by remember { mutableStateOf(settings.notificationHour.toString().padStart(2, '0')) }
-            var minute by remember { mutableStateOf(settings.notificationMinute.toString().padStart(2, '0')) }
+
+            var hour   by remember(settings.notificationHour)   { mutableStateOf(settings.notificationHour.toString().padStart(2, '0')) }
+            var minute by remember(settings.notificationMinute) { mutableStateOf(settings.notificationMinute.toString().padStart(2, '0')) }
 
             Row(
                 verticalAlignment     = Alignment.CenterVertically,

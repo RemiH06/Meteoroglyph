@@ -7,6 +7,7 @@ import com.irofactory.meteoroglyph.data.settings.AppSettings
 import com.irofactory.meteoroglyph.data.settings.CalendarKeyword
 import com.irofactory.meteoroglyph.data.settings.Location
 import com.irofactory.meteoroglyph.data.settings.SettingsRepository
+import com.irofactory.meteoroglyph.worker.WeatherCheckWorker
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -32,7 +33,10 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
     fun setRainThreshold(v: Int)        = save { it.copy(rainThresholdPct = v) }
     fun setWindThreshold(v: Int)        = save { it.copy(windThresholdKmh = v) }
     fun setUberRainThreshold(v: Int)    = save { it.copy(uberRainThresholdPct = v) }
-    fun setNotifHour(h: Int, m: Int)    = save { it.copy(notificationHour = h, notificationMinute = m) }
+    fun setNotifHour(h: Int, m: Int) {
+        save { it.copy(notificationHour = h, notificationMinute = m) }
+        WeatherCheckWorker.schedule(getApplication(), h, m)
+    }
 
     // ── Workplaces ────────────────────────────────────────────────────────────
     fun addWorkplace(loc: Location) = save { s ->
