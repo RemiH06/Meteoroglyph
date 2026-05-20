@@ -19,20 +19,22 @@ import com.irofactory.meteoroglyph.ui.theme.GreenSurface
 import com.irofactory.meteoroglyph.ui.theme.RedSurface
 import com.irofactory.meteoroglyph.ui.theme.SpaceMono
 import com.irofactory.meteoroglyph.ui.theme.WarnAmber
+import com.irofactory.meteoroglyph.ui.theme.metroColors
 
 enum class ChipState { OK, WARN, DANGER, NEUTRAL }
 
 @Composable
 fun StatusChip(
     modifier: Modifier = Modifier,
+    label: String,
     state: ChipState = ChipState.NEUTRAL,
-    label: String
 ) {
+    val mc = metroColors
     val (bg, fg, border) = when (state) {
-        ChipState.OK      -> Triple(GreenSurface, AccentGreen, AccentGreen.copy(alpha = 0.3f))
-        ChipState.WARN    -> Triple(AmberSurface, WarnAmber,   WarnAmber.copy(alpha = 0.3f))
-        ChipState.DANGER  -> Triple(RedSurface,   DangerRed,   DangerRed.copy(alpha = 0.3f))
-        ChipState.NEUTRAL -> Triple(Color(0xFF111111), Color(0xFF555555), Border)
+        ChipState.OK      -> Triple(mc.greenSurface,  mc.accent,        mc.accent.copy(alpha = 0.3f))
+        ChipState.WARN    -> Triple(mc.amberSurface,  mc.warn,          mc.warn.copy(alpha = 0.3f))
+        ChipState.DANGER  -> Triple(mc.redSurface,    mc.danger,        mc.danger.copy(alpha = 0.3f))
+        ChipState.NEUTRAL -> Triple(mc.surface2,      mc.textSecondary, mc.border)
     }
 
     Box(
@@ -45,7 +47,7 @@ fun StatusChip(
             text          = label.uppercase(),
             color         = fg,
             fontFamily    = SpaceMono,
-            fontSize      = androidx.compose.ui.unit.TextUnit(9f, androidx.compose.ui.unit.TextUnitType.Sp),
+            fontSize      = 9.sp,
             letterSpacing = 0.06.sp
         )
     }

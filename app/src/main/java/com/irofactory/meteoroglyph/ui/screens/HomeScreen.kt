@@ -127,6 +127,7 @@ private fun AppHeader(
     onSettingsClick: () -> Unit,
     glyphRepo: GlyphRepository
 ) {
+    val mc = metroColors
     val settingsGlyph = remember { glyphRepo.getGlyph("ui", "settings") }
 
     Column(modifier = Modifier.padding(top = 16.dp)) {
@@ -137,20 +138,20 @@ private fun AppHeader(
         ) {
             Column {
                 Row {
-                    Text("meteoro", fontFamily = SpaceMono, fontSize = 20.sp, color = Color(0xFFF0F0F0))
-                    Text("glyph",   fontFamily = SpaceMono, fontSize = 20.sp, color = AccentGreen)
+                    Text("meteoro", fontFamily = SpaceMono, fontSize = 20.sp, color = mc.textPrimary)
+                    Text("glyph",   fontFamily = SpaceMono, fontSize = 20.sp, color = mc.accent)
                 }
                 Text(
                     text  = "OUTFIT · CLIMATE · TRANSIT",
                     style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary
+                    color = mc.textSecondary
                 )
             }
             if (settingsGlyph != null) {
                 IconButton(onClick = onSettingsClick) {
                     GlyphRenderer(
                         glyph    = settingsGlyph,
-                        tint     = TextSecondary,
+                        tint     = mc.textSecondary,
                         modifier = Modifier.size(24.dp)
                     )
                 }

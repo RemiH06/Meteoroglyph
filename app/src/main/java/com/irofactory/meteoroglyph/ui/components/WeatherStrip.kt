@@ -27,6 +27,7 @@ import com.irofactory.meteoroglyph.ui.theme.SpaceMono
 import com.irofactory.meteoroglyph.ui.theme.Surface1
 import com.irofactory.meteoroglyph.ui.theme.TextSecondary
 import com.irofactory.meteoroglyph.ui.theme.WarnAmber
+import com.irofactory.meteoroglyph.ui.theme.metroColors
 
 @Composable
 fun WeatherStrip(
@@ -37,12 +38,13 @@ fun WeatherStrip(
     nextEvent: String?,
     glyph: ParsedGlyph? = null
 ) {
+    val mc = metroColors
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .border(0.5.dp, Border, RoundedCornerShape(12.dp)),
+            .border(0.5.dp, mc.border, RoundedCornerShape(12.dp)),
         shape  = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Surface1)
+        colors = CardDefaults.cardColors(containerColor = mc.surface1)
     ) {
         Row(
             modifier = Modifier
@@ -60,29 +62,30 @@ fun WeatherStrip(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
             }
-
-            // Temperatura y condición
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(
-                    text       = "$temp°",
-                    style      = MaterialTheme.typography.displayMedium,
-                    color      = WarnAmber
+                    text  = "$temp°",
+                    style = MaterialTheme.typography.displayMedium,
+                    color = mc.warn
                 )
                 Text(
                     text       = condition,
-                    style      = MaterialTheme.typography.bodySmall,
-                    color      = TextSecondary
+                    fontFamily = SpaceMono,
+                    fontSize   = 11.sp,
+                    color      = mc.textSecondary
                 )
                 if (rainWindow != null) {
                     Text(
-                        text  = "lluvia $rainWindow",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = TextSecondary
+                        text       = "lluvia $rainWindow",
+                        fontFamily = SpaceMono,
+                        fontSize   = 10.sp,
+                        color      = mc.textSecondary
                     )
                 }
             }
-
-            // Evento siguiente
             Column(horizontalAlignment = Alignment.End) {
                 StatusChip(label = "precaución", state = ChipState.WARN)
                 if (nextEvent != null) {
@@ -90,7 +93,7 @@ fun WeatherStrip(
                         text       = nextEvent,
                         fontFamily = SpaceMono,
                         fontSize   = 10.sp,
-                        color      = PurpleEvent,
+                        color      = mc.purple,
                         modifier   = Modifier.padding(top = 6.dp)
                     )
                 }

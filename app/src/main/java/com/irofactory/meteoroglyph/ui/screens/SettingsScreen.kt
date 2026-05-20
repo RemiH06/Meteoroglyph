@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ fun SettingsScreen(
     ) {
         // Header
         Column(modifier = Modifier.padding(top = 16.dp)) {
+            val mc = metroColors
             Row(
                 modifier              = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -52,17 +54,27 @@ fun SettingsScreen(
             ) {
                 Column {
                     Row {
-                        Text("meteoro", fontFamily = SpaceMono, fontSize = 20.sp, color = Color(0xFFF0F0F0))
-                        Text("glyph",   fontFamily = SpaceMono, fontSize = 20.sp, color = AccentGreen)
+                        Text("meteoro", fontFamily = SpaceMono, fontSize = 20.sp, color = mc.textPrimary)
+                        Text("glyph",   fontFamily = SpaceMono, fontSize = 20.sp, color = mc.accent)
                     }
                     Text(
                         text  = "CONFIGURACIÓN",
                         style = MaterialTheme.typography.labelSmall,
-                        color = TextSecondary
+                        color = mc.textSecondary
                     )
                 }
-                IconButton(onClick = onNavigateBack) {
-                    Text("←", fontSize = 18.sp, color = TextSecondary)
+                val arrowGlyph = remember { glyphRepo.getGlyph("ui", "arrow_right") }
+
+                if (arrowGlyph != null) {
+                    IconButton(onClick = onNavigateBack) {
+                        GlyphRenderer(
+                            glyph    = arrowGlyph,
+                            tint     = mc.textSecondary,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .graphicsLayer { rotationZ = 180f }
+                        )
+                    }
                 }
             }
         }
@@ -175,6 +187,7 @@ fun SettingsScreen(
 
         // ── Notificación diaria ───────────────────────────────────────────────
         SettingsSection(title = "NOTIFICACIÓN DIARIA") {
+            val mc = metroColors
             var hour   by remember { mutableStateOf(settings.notificationHour.toString().padStart(2, '0')) }
             var minute by remember { mutableStateOf(settings.notificationMinute.toString().padStart(2, '0')) }
 
@@ -189,7 +202,7 @@ fun SettingsScreen(
                     modifier      = Modifier.width(64.dp),
                     keyboardType  = KeyboardType.Number
                 )
-                Text(":", fontFamily = SpaceMono, color = TextSecondary, fontSize = 18.sp)
+                Text(":", fontFamily = SpaceMono, color = mc.textSecondary, fontSize = 18.sp)
                 MetroTextField(
                     value         = minute,
                     onValueChange = { if (it.length <= 2) minute = it },
@@ -250,18 +263,19 @@ private fun SettingsSection(
     title: String,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val mc = metroColors
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(
             text          = title,
             fontFamily    = SpaceMono,
             fontSize      = 9.sp,
-            color         = TextMuted,
+            color         = mc.textMuted,
             letterSpacing = 0.14.sp
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(0.5.dp, Border, RoundedCornerShape(8.dp))
+                .border(0.5.dp, mc.border, RoundedCornerShape(8.dp))
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             content = content
@@ -274,12 +288,13 @@ private fun SettingsRow(
     label: String,
     content: @Composable () -> Unit
 ) {
+    val mc = metroColors
     Row(
         modifier              = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically
     ) {
-        Text(label, fontFamily = SpaceMono, fontSize = 11.sp, color = TextPrimary)
+        Text(label, fontFamily = SpaceMono, fontSize = 11.sp, color = mc.textPrimary)
         content()
     }
 }
@@ -291,6 +306,7 @@ private fun LocationEditor(
     onSave: (Location) -> Unit,
     onDelete: (() -> Unit)? = null
 ) {
+    val mc = metroColors
     var label by remember(location.label) { mutableStateOf(location.label) }
     var lat   by remember(location.lat)   { mutableStateOf(location.lat.toString()) }
     var lon   by remember(location.lon)   { mutableStateOf(location.lon.toString()) }
@@ -301,10 +317,10 @@ private fun LocationEditor(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment     = Alignment.CenterVertically
         ) {
-            Text(title, fontFamily = SpaceMono, fontSize = 10.sp, color = AccentGreen)
+            Text(title, fontFamily = SpaceMono, fontSize = 10.sp, color = mc.accent)
             if (onDelete != null) {
                 TextButton(onClick = onDelete, contentPadding = PaddingValues(0.dp)) {
-                    Text("eliminar", fontFamily = SpaceMono, fontSize = 9.sp, color = DangerRed)
+                    Text("eliminar", fontFamily = SpaceMono, fontSize = 9.sp, color = mc.danger)
                 }
             }
         }
@@ -333,20 +349,21 @@ private fun LocationEditor(
 
 @Composable
 private fun KeywordRow(keyword: CalendarKeyword, onDelete: () -> Unit) {
+    val mc = metroColors
     Row(
         modifier              = Modifier
             .fillMaxWidth()
-            .border(0.5.dp, Border, RoundedCornerShape(4.dp))
+            .border(0.5.dp, mc.border, RoundedCornerShape(4.dp))
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically
     ) {
         Column {
-            Text(keyword.keyword,       fontFamily = SpaceMono, fontSize = 10.sp, color = TextPrimary)
-            Text("→ ${keyword.locationLabel}", fontFamily = SpaceMono, fontSize = 9.sp, color = TextSecondary)
+            Text(keyword.keyword,             fontFamily = SpaceMono, fontSize = 10.sp, color = mc.textPrimary)
+            Text("→ ${keyword.locationLabel}", fontFamily = SpaceMono, fontSize = 9.sp,  color = mc.textSecondary)
         }
         TextButton(onClick = onDelete, contentPadding = PaddingValues(0.dp)) {
-            Text("✕", fontFamily = SpaceMono, fontSize = 10.sp, color = DangerRed)
+            Text("✕", fontFamily = SpaceMono, fontSize = 10.sp, color = mc.danger)
         }
     }
 }
@@ -356,6 +373,7 @@ private fun AddKeywordRow(
     locationOptions: List<String>,
     onAdd: (CalendarKeyword) -> Unit
 ) {
+    val mc = metroColors
     var keyword  by remember { mutableStateOf("") }
     var selected by remember { mutableStateOf(locationOptions.firstOrNull() ?: "") }
     var expanded by remember { mutableStateOf(false) }
@@ -372,11 +390,14 @@ private fun AddKeywordRow(
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 OutlinedButton(
-                    onClick = { expanded = true },
+                    onClick  = { expanded = true },
                     modifier = Modifier.fillMaxWidth(),
-                    shape  = RoundedCornerShape(4.dp),
-                    border = androidx.compose.foundation.BorderStroke(0.5.dp, Border),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = TextPrimary)
+                    shape    = RoundedCornerShape(4.dp),
+                    border   = androidx.compose.foundation.BorderStroke(0.5.dp, mc.border),
+                    colors   = ButtonDefaults.outlinedButtonColors(
+                        containerColor = mc.surface1,
+                        contentColor   = mc.textPrimary
+                    )
                 ) {
                     Text(
                         text       = selected.ifEmpty { "ubicación" },
@@ -385,13 +406,13 @@ private fun AddKeywordRow(
                     )
                 }
                 DropdownMenu(
-                    expanded        = expanded,
+                    expanded         = expanded,
                     onDismissRequest = { expanded = false },
-                    containerColor  = Surface1
+                    containerColor   = mc.surface1
                 ) {
                     locationOptions.forEach { opt ->
                         DropdownMenuItem(
-                            text    = { Text(opt, fontFamily = SpaceMono, fontSize = 10.sp, color = TextPrimary) },
+                            text    = { Text(opt, fontFamily = SpaceMono, fontSize = 10.sp, color = mc.textPrimary) },
                             onClick = { selected = opt; expanded = false }
                         )
                     }
@@ -476,6 +497,7 @@ private fun MetroTextField(
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
+    val mc = metroColors
     OutlinedTextField(
         value         = value,
         onValueChange = onValueChange,
@@ -484,15 +506,17 @@ private fun MetroTextField(
         singleLine    = true,
         shape         = RoundedCornerShape(4.dp),
         colors        = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor   = AccentGreen,
-            unfocusedBorderColor = Border,
-            focusedLabelColor    = AccentGreen,
-            unfocusedLabelColor  = TextSecondary,
-            cursorColor          = AccentGreen,
-            focusedTextColor     = TextPrimary,
-            unfocusedTextColor   = TextPrimary
+            focusedBorderColor      = mc.accent,
+            unfocusedBorderColor    = mc.border,
+            focusedLabelColor       = mc.accent,
+            unfocusedLabelColor     = mc.textSecondary,
+            cursorColor             = mc.accent,
+            focusedTextColor        = mc.textPrimary,
+            unfocusedTextColor      = mc.textPrimary,
+            focusedContainerColor   = mc.surface1,
+            unfocusedContainerColor = mc.surface1
         ),
-        textStyle     = androidx.compose.ui.text.TextStyle(
+        textStyle = androidx.compose.ui.text.TextStyle(
             fontFamily = SpaceMono,
             fontSize   = 11.sp
         ),
@@ -502,14 +526,15 @@ private fun MetroTextField(
 
 @Composable
 private fun MetroButton(label: String, onClick: () -> Unit) {
+    val mc = metroColors
     Button(
-        onClick  = onClick,
-        shape    = RoundedCornerShape(4.dp),
-        colors   = ButtonDefaults.buttonColors(
-            containerColor = GreenSurface,
-            contentColor   = AccentGreen
+        onClick = onClick,
+        shape   = RoundedCornerShape(4.dp),
+        colors  = ButtonDefaults.buttonColors(
+            containerColor = mc.greenSurface,
+            contentColor   = mc.accent
         ),
-        border   = androidx.compose.foundation.BorderStroke(0.5.dp, AccentGreen.copy(alpha = 0.3f))
+        border = androidx.compose.foundation.BorderStroke(0.5.dp, mc.accent.copy(alpha = 0.3f))
     ) {
         Text(label, fontFamily = SpaceMono, fontSize = 9.sp)
     }

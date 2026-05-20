@@ -30,6 +30,7 @@ import com.irofactory.meteoroglyph.ui.theme.AmberSurface
 import com.irofactory.meteoroglyph.ui.theme.SpaceMono
 import com.irofactory.meteoroglyph.ui.theme.TextSecondary
 import com.irofactory.meteoroglyph.ui.theme.WarnAmber
+import com.irofactory.meteoroglyph.ui.theme.metroColors
 
 enum class OutfitItemState { RECOMMENDED, CONDITIONAL, BLOCKED, NEUTRAL }
 
@@ -47,22 +48,23 @@ private fun OutfitChip(
     item: OutfitItem,
     glyphRepo: GlyphRepository
 ) {
+    val mc = metroColors
     val (bg, fg, borderColor) = when (item.state) {
-        OutfitItemState.RECOMMENDED -> Triple(GreenSurface, AccentGreen, AccentGreen.copy(alpha = 0.3f))
-        OutfitItemState.CONDITIONAL -> Triple(AmberSurface, WarnAmber,   WarnAmber.copy(alpha = 0.3f))
-        OutfitItemState.BLOCKED     -> Triple(RedSurface,   DangerRed,   DangerRed.copy(alpha = 0.2f))
-        OutfitItemState.NEUTRAL     -> Triple(Color(0xFF111111), TextSecondary, Border)
+        OutfitItemState.RECOMMENDED -> Triple(mc.greenSurface,  mc.accent,  mc.accent.copy(alpha = 0.3f))
+        OutfitItemState.CONDITIONAL -> Triple(mc.amberSurface,  mc.warn,    mc.warn.copy(alpha = 0.3f))
+        OutfitItemState.BLOCKED     -> Triple(mc.redSurface,    mc.danger,  mc.danger.copy(alpha = 0.2f))
+        OutfitItemState.NEUTRAL     -> Triple(mc.surface2,      mc.textSecondary, mc.border)
+    }
+
+    val tint = when (item.state) {
+        OutfitItemState.RECOMMENDED -> mc.accent
+        OutfitItemState.CONDITIONAL -> mc.warn
+        OutfitItemState.BLOCKED     -> mc.danger
+        OutfitItemState.NEUTRAL     -> mc.textSecondary
     }
 
     val glyph = remember(item.glyphFile, item.glyphName) {
         glyphRepo.getGlyph(item.glyphFile, item.glyphName)
-    }
-
-    val tint = when (item.state) {
-        OutfitItemState.RECOMMENDED -> AccentGreen
-        OutfitItemState.CONDITIONAL -> WarnAmber
-        OutfitItemState.BLOCKED     -> DangerRed
-        OutfitItemState.NEUTRAL     -> TextSecondary
     }
 
     Surface(
