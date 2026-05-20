@@ -35,6 +35,7 @@ fun HomeScreen(
     val context   = LocalContext.current
     val uiState   by vm.uiState.collectAsStateWithLifecycle()
     val glyphRepo = remember { GlyphRepository(context) }
+    val mc        = metroColors
 
     // Pedir permiso de calendario
     val calendarPermission = rememberLauncherForActivityResult(
@@ -61,10 +62,10 @@ fun HomeScreen(
         when {
             uiState.isLoading -> {
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(120.dp),
+                    modifier         = Modifier.fillMaxWidth().height(120.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = AccentGreen)
+                    CircularProgressIndicator(color = mc.accent)
                 }
             }
             uiState.error != null -> {
@@ -72,7 +73,7 @@ fun HomeScreen(
                     text       = uiState.error!!,
                     fontFamily = SpaceMono,
                     fontSize   = 11.sp,
-                    color      = DangerRed
+                    color      = mc.danger
                 )
             }
             uiState.weather != null -> {
@@ -90,7 +91,8 @@ fun HomeScreen(
                     condition  = conditionLabel(weather),
                     rainWindow = weather.rainWindow,
                     nextEvent  = nextEventStr,
-                    glyph      = weatherGlyph
+                    glyph      = weatherGlyph,
+                    glyphTint  = if (mc.isDark) null else mc.textPrimary
                 )
 
                 OutfitChips(

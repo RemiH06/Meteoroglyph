@@ -16,6 +16,7 @@ import com.irofactory.meteoroglyph.data.outfit.OutfitEngine
 import com.irofactory.meteoroglyph.data.outfit.TransitRecommendation
 import com.irofactory.meteoroglyph.data.settings.SettingsRepository
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
+import kotlinx.coroutines.flow.first
 
 data class HomeUiState(
     val isLoading: Boolean                  = true,
@@ -38,21 +39,28 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
     init {
         viewModelScope.launch {
             settingsRepo.settings.collect { settings ->
-                refresh(settings.homeLat, settings.homeLon)
+                refresh(settings.homeLat, settings.homeLon, settings)
             }
         }
     }
 
-    fun refresh(lat: Double = 20.6597, lon: Double = -103.3496) {
+    fun refresh(
+        lat: Double = 20.6597,
+        lon: Double = -103.3496,
+        settings: com.irofactory.meteoroglyph.data.settings.AppSettings? = null
+    ) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-            val weatherResult = weatherRepo.getWeather(lat, lon)
-            val weather       = weatherResult.getOrNull()
-            val error         = if (weatherResult.isFailure) "No se pudo obtener el clima" else null
-            val nextEvent     = try { calendarRepo.getNextEvent() } catch (e: Exception) { null }
-            val outfitItems   = weather?.let { OutfitEngine.recommend(it) } ?: emptyList()
-            val transitRec    = weather?.let { OutfitEngine.recommendTransit(it) }
+            val currentSettings = settings ?: settingsRepo.settings.first()
+            val weatherResult   = weatherRepo.getWeather(lat, lon)
+            val weather         = weatherResult.getOrNull()
+            val error           = if (weatherResult.isFailure) "No se pudo obtener el clima" else null
+            val nextEvent = try {
+                calendarRepo.getNextEvent(currentSettings)
+            } catch (e: Exception) { null }
+            val outfitItems     = weather?.let { OutfitEngine.recommend(it, currentSettings) } ?: emptyList()
+            val transitRec      = weather?.let { OutfitEngine.recommendTransit(it, currentSettings) }
                 ?: TransitRecommendation.PUBLIC_OK
 
             _uiState.value = HomeUiState(

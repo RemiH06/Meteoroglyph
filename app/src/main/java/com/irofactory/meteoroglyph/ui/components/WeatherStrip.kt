@@ -36,7 +36,8 @@ fun WeatherStrip(
     condition: String,
     rainWindow: String?,
     nextEvent: String?,
-    glyph: ParsedGlyph? = null
+    glyph: ParsedGlyph? = null,
+    glyphTint: androidx.compose.ui.graphics.Color? = null
 ) {
     val mc = metroColors
     Card(
@@ -56,6 +57,7 @@ fun WeatherStrip(
             if (glyph != null) {
                 GlyphRenderer(
                     glyph    = glyph,
+                    tint     = glyphTint,
                     modifier = Modifier
                         .size(60.dp)
                         .align(Alignment.CenterVertically)

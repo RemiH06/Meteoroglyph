@@ -1,5 +1,6 @@
 package com.irofactory.meteoroglyph.data.outfit
 
+import com.irofactory.meteoroglyph.data.settings.AppSettings
 import com.irofactory.meteoroglyph.data.weather.WeatherCondition
 import com.irofactory.meteoroglyph.data.weather.WeatherState
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
@@ -7,17 +8,17 @@ import com.irofactory.meteoroglyph.ui.components.OutfitItemState
 
 object OutfitEngine {
 
-    fun recommend(weather: WeatherState): List<OutfitItem> {
+    fun recommend(weather: WeatherState, settings: AppSettings): List<OutfitItem> {
         val items = mutableListOf<OutfitItem>()
 
         // ── Variables de condición ────────────────────────────────────────────
-        val temp        = weather.tempCelsius
-        val rain        = weather.rainProbability >= 40
-        val heavyRain   = weather.rainProbability >= 70
-        val wind        = weather.windSpeedKmh >= 35
-        val hot         = temp >= 28
-        val cold        = temp <= 14
-        val veryCold    = temp <= 8
+        val temp      = weather.tempCelsius
+        val rain      = weather.rainProbability >= settings.rainThresholdPct
+        val heavyRain = weather.rainProbability >= (settings.rainThresholdPct + 30).coerceAtMost(90)
+        val wind      = weather.windSpeedKmh >= settings.windThresholdKmh
+        val hot       = temp >= settings.heatThresholdC
+        val cold      = temp <= settings.coldThresholdC
+        val veryCold  = temp <= settings.coldThresholdC - 6
         val rainWindow  = weather.rainWindow
         val storm       = weather.condition == WeatherCondition.STORM
         val snow        = weather.condition == WeatherCondition.SNOW ||
@@ -142,11 +143,11 @@ object OutfitEngine {
     }
 
     // ── Transporte ────────────────────────────────────────────────────────────
-    fun recommendTransit(weather: WeatherState): TransitRecommendation {
-        val rain      = weather.rainProbability >= 40
-        val heavyRain = weather.rainProbability >= 70
+    fun recommendTransit(weather: WeatherState, settings: AppSettings): TransitRecommendation {
+        val rain      = weather.rainProbability >= settings.rainThresholdPct
+        val heavyRain = weather.rainProbability >= settings.uberRainThresholdPct
         val storm     = weather.condition == WeatherCondition.STORM
-        val wind      = weather.windSpeedKmh >= 35
+        val wind      = weather.windSpeedKmh >= settings.windThresholdKmh
 
         return when {
             storm || heavyRain -> TransitRecommendation.UBER

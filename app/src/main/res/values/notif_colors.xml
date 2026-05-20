@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="notif_bg">#313035</color>
+    <color name="notif_text_primary">#F0F0F0</color>
+    <color name="notif_text_secondary">#4A4A4A</color>
+    <color name="notif_accent">#00E5A0</color>
+    <color name="notif_accent_border">#1A4030</color>
+    <color name="notif_accent_surface">#001A10</color>
+    <color name="notif_warn">#F5A623</color>
+    <color name="notif_blue">#457BFF</color>
+    <color name="notif_purple">#9B6DFF</color>
+    <color name="notif_border">#1C1C1C</color>
+    <color name="notif_orange">#FF7A30</color>
+</resources>
