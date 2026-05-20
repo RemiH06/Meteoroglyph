@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>meteoroglyph — Documentación</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=space-mono:400,700&family=dm-sans:300,400,500,600&display=swap" rel="stylesheet">
+<style>
+.metro{--bg:#F5F0E8;--bg2:#EDE8DC;--bg3:#E4DDD0;--text:#1A1410;--text2:#6B5E50;--border:#C8BFB0;--red:#8B1A1A;--yellow:#C4691A;--green:#2A6B3A;--blue:#1A3A6B;--purple:#4A1A6B;--orange:#A84510;--pink:#8B1A4A;--brown:#5C3317;--black:#0D0A08;--white:#FAF7F2;--gray:#9A8E82;--accent:#6B1A2A;--accent2:#C4691A;--ok:#2A6B3A;--warn:#C4691A;--danger:#8B1A1A;--mono:'Space Mono','Courier New',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:4px;--radius-lg:8px}
+.metro.dark{--bg:#0a0c10;--bg2:#0f1219;--bg3:#161b26;--text:#e8eaf0;--text2:#7a8099;--border:#1e2535;--red:#ff4560;--yellow:#f5a623;--green:#00e5a0;--blue:#457BFF;--purple:#9B6DFF;--orange:#FF7A30;--pink:#FF4D8F;--brown:#C4855A;--black:#000000;--white:#ffffff;--gray:#4a5568;--accent:#00e5a0;--accent2:#457BFF;--ok:#00e5a0;--warn:#f5a623;--danger:#ff4560}
+.metro *,.metro *::before,.metro *::after{box-sizing:border-box;margin:0;padding:0}
+.metro{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;transition:background .3s,color .3s}
+.metro h2{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text);margin:40px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.5px}
+.metro h3{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin:24px 0 10px}
+.metro h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.metro p{margin-bottom:14px;line-height:1.8}.metro p.muted{color:var(--text2);font-size:13px}
+.metro strong{font-weight:600}.metro a{color:var(--accent);text-decoration:none}.metro a:hover{text-decoration:underline}
+.metro code{font-family:var(--mono);font-size:12px;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:var(--radius);color:var(--accent)}
+.metro pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:16px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text)}
+.metro pre .kw{color:var(--blue)}.metro pre .cm{color:var(--text2);font-style:italic}.metro pre .str{color:var(--green)}.metro pre .num{color:var(--yellow)}.metro pre .fn{color:var(--purple)}
+.metro .callout{border-left:3px solid var(--accent);background:var(--bg2);padding:14px 18px;margin:20px 0;border-radius:0 var(--radius) var(--radius) 0}
+.metro .callout-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.metro .callout p{margin-bottom:0;font-size:13px}
+.metro .callout.ok{border-color:var(--ok)}.metro .callout.ok .callout-title{color:var(--ok)}
+.metro .callout.warn{border-color:var(--warn)}.metro .callout.warn .callout-title{color:var(--warn)}
+.metro .callout.danger{border-color:var(--danger)}.metro .callout.danger .callout-title{color:var(--danger)}
+.metro .callout.blue{border-color:var(--blue)}.metro .callout.blue .callout-title{color:var(--blue)}
+.metro .callout.purple{border-color:var(--purple)}.metro .callout.purple .callout-title{color:var(--purple)}
+.metro table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.metro th{background:var(--bg3);padding:8px 12px;text-align:left;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text2);border-bottom:1px solid var(--border)}
+.metro td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.metro tr:hover td{background:var(--bg3)}
+.metro .badge{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2)}
+.metro .badge.ok{border-color:var(--ok);color:var(--ok)}.metro .badge.warn{border-color:var(--warn);color:var(--warn)}.metro .badge.blue{border-color:var(--blue);color:var(--blue)}.metro .badge.purple{border-color:var(--purple);color:var(--purple)}
+.metro .divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.metro .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
+.metro .step-row{display:flex;gap:16px;align-items:flex-start;margin:12px 0;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.metro .step-num{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);min-width:32px;line-height:1;margin-top:2px}
+.metro .timeline{margin:16px 0}
+.metro .timeline-item{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)}
+.metro .timeline-item:last-child{border-bottom:none}
+.metro .timeline-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;margin-top:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3)}
+.metro .timeline-dot.done{background:color-mix(in srgb,var(--ok) 15%,transparent);border-color:var(--ok);color:var(--ok)}
+.metro .timeline-dot.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);border-color:var(--warn);color:var(--warn)}
+.metro .theme-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:none;border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s}
+.metro .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+html,body{height:100%}
+body{padding:40px;max-width:900px;margin:0 auto}
+#metro-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+body>*{position:relative;z-index:1}
+</style>
+</head>
+<body class="metro dark">
+
+<canvas id="metro-bg"></canvas>
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px">
+  <div>
+    <div style="font-family:var(--mono);font-size:24px;font-weight:700;letter-spacing:-1.5px">
+      meteoro<span style="color:var(--accent)">glyph</span>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:.12em;margin-top:4px">
+      DOCUMENTACIÓN TÉCNICA · v2.0 · by Hex (@RemiH06)
+    </div>
+  </div>
+  <button class="theme-btn" onclick="toggle()">☀ Light</button>
+</div>
+
+<!-- ── Descripción ── -->
+<h2>Descripción general</h2>
+<p>meteoroglyph es una app Android personal para el Nothing Phone 3a que combina clima en tiempo real, calendario de Google y la interfaz Glyph para generar recomendaciones de outfit diarias. Construida completamente en Kotlin con Jetpack Compose, siguiendo la estética <strong>metro_theme</strong> y la tipografía Ndot-57 de Nothing.</p>
+
+<div class="callout blue">
+  <div class="callout-title">Requisitos de hardware</div>
+  <p>Optimizada para <strong>Nothing Phone 3a (A059)</strong> con Nothing OS 4.0 (Android 16). Las funciones Glyph requieren el SDK 2.0 y el dispositivo DEVICE_24111.</p>
+</div>
+
+<!-- ── Screenshots ── -->
+<h2>Capturas de pantalla</h2>
+<style>
+.ss-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+.ss-frame{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg2);transition:border-color .2s}
+.ss-frame:hover{border-color:var(--accent)}
+.ss-frame img{width:100%;display:block;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.ss-label{font-family:var(--mono);font-size:10px;color:var(--text2);padding:8px 12px;letter-spacing:.06em;border-top:1px solid var(--border)}
+.ss-video{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg2);margin:16px 0;transition:border-color .2s}
+.ss-video:hover{border-color:var(--accent)}
+.ss-video video{width:100%;display:block}
+.ss-video .ss-label{border-top:1px solid var(--border)}
+@media(max-width:600px){.ss-grid{grid-template-columns:1fr}}
+</style>
+
+<div class="ss-grid">
+  <div class="ss-frame">
+    <img src="https://remiah06.github.io/Meteoroglyph/mg_ss1.png"
+         onerror="this.src='mg_ss1.png'"
+         alt="Pantalla principal">
+    <div class="ss-label">HOME SCREEN</div>
+  </div>
+  <div class="ss-frame">
+    <img src="https://remiah06.github.io/Meteoroglyph/mg_ss3.png"
+         onerror="this.src='mg_ss3.png'"
+         alt="Widget circular">
+    <div class="ss-label">WIDGET CIRCLE</div>
+  </div>
+  <div class="ss-frame">
+    <img src="https://remiah06.github.io/Meteoroglyph/mg_ss4.png"
+         onerror="this.src='mg_ss4.png'"
+         alt="Widget de información">
+    <div class="ss-label">WIDGET INFO</div>
+  </div>
+</div>
+
+<div class="ss-video">
+  <video controls preload="metadata"
+         poster="https://remiah06.github.io/Meteoroglyph/mg_ss1.png">
+    <source src="https://remiah06.github.io/Meteoroglyph/mg_ss2.mp4" type="video/mp4">
+    <source src="mg_ss2.mp4" type="video/mp4">
+    Tu navegador no soporta video HTML5.
+  </video>
+  <div class="ss-label">CONFIGURACIÓN · SIMULACIÓN DE FLUIDO · 0:30</div>
+</div>
+
+<!-- ── Arquitectura ── -->
+<h2>Arquitectura</h2>
+<p class="muted">La app sigue una arquitectura MVVM limpia con capas bien separadas.</p>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-dot done">UI</div>
+    <div><h4>Capa de UI — Jetpack Compose</h4><p style="font-size:13px;color:var(--text2)"><code>HomeScreen</code>, <code>SettingsScreen</code>, <code>FluidMatrixView</code>, <code>GlyphRenderer</code>, widgets Glance. Todo el estado viene del ViewModel via <code>StateFlow</code>.</p></div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot done">VM</div>
+    <div><h4>ViewModels</h4><p style="font-size:13px;color:var(--text2)"><code>HomeViewModel</code> orquesta clima, calendario, outfit y Glyph. <code>SettingsViewModel</code> persiste configuración via DataStore.</p></div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot done">DA</div>
+    <div><h4>Capa de datos</h4><p style="font-size:13px;color:var(--text2)"><code>WeatherRepository</code> (Open-Meteo), <code>CalendarRepository</code> (CalendarContract), <code>GlyphRepository</code> (JSON assets), <code>SettingsRepository</code> (DataStore), <code>LocationRepository</code> (FusedLocation).</p></div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot done">BG</div>
+    <div><h4>Background</h4><p style="font-size:13px;color:var(--text2)"><code>WeatherCheckWorker</code> (WorkManager diario), <code>EventAlarmScheduler</code> + <code>EventAlarmReceiver</code> (AlarmManager exacto por evento), <code>BootReceiver</code>.</p></div>
+  </div>
+</div>
+
+<!-- ── Módulos ── -->
+<h2>Módulos principales</h2>
+
+<h3>OutfitEngine</h3>
+<p>Motor de recomendación de ropa. Recibe un <code>WeatherState</code> y los umbrales configurados en <code>AppSettings</code> y devuelve una lista de <code>OutfitItem</code> con tres estados posibles.</p>
+<table>
+  <tr><th>Estado</th><th>Color</th><th>Significado</th></tr>
+  <tr><td><code>RECOMMENDED</code></td><td><span class="badge ok">verde</span></td><td>Prenda adecuada para el clima actual</td></tr>
+  <tr><td><code>CONDITIONAL</code></td><td><span class="badge warn">ámbar</span></td><td>Llevar con precaución (ej. paraguas si hay 40% lluvia)</td></tr>
+  <tr><td><code>BLOCKED</code></td><td><span class="badge" style="border-color:var(--danger);color:var(--danger)">rojo</span></td><td>No recomendado (ej. sandalias si llueve)</td></tr>
+  <tr><td><code>NEUTRAL</code></td><td><span class="badge">gris</span></td><td>Irrelevante para las condiciones actuales</td></tr>
+</table>
+
+<h3>GlyphRepository + GlyphRenderer</h3>
+<p>Sistema de iconografía custom basado en matrices de puntos JSON creadas con <strong>GlyphFactory</strong>. El repositorio parsea los archivos desde <code>assets/glyphs/</code> y los cachea en memoria. El renderer dibuja cada glifo en un <code>Canvas</code> de Compose con círculos para cada punto activo.</p>
+
+<pre><span class="cm">// Cargar y renderizar un glifo</span>
+<span class="kw">val</span> repo  = GlyphRepository(context)
+<span class="kw">val</span> glyph = repo.getGlyph(<span class="str">"weather"</span>, <span class="str">"rain"</span>)
+
+GlyphRenderer(
+    glyph    = glyph,
+    tint     = AccentGreen,   <span class="cm">// null = colores originales del JSON</span>
+    modifier = Modifier.size(<span class="num">48</span>.dp)
+)</pre>
+
+<h3>FluidSimulation (SPH)</h3>
+<p>Motor de física de fluidos basado en <strong>Smoothed Particle Hydrodynamics</strong>. Simula N partículas en un espacio 2D circular con fuerzas de presión, viscosidad y gravedad adaptativa según el acelerómetro.</p>
+
+<table>
+  <tr><th>Parámetro</th><th>Variable</th><th>Descripción</th><th>Rango</th></tr>
+  <tr><td>Llenado</td><td><code>fillRatio</code></td><td>Fracción del recipiente llena</td><td>0.1 – 2.0</td></tr>
+  <tr><td>Viscosidad</td><td><code>viscosity</code> (μ)</td><td>Resistencia al movimiento</td><td>0.01 – 2.0</td></tr>
+  <tr><td>Rigidez</td><td><code>stiffness</code> (k)</td><td>Compresibilidad del fluido</td><td>0.1 – 5.0</td></tr>
+  <tr><td>Rebote</td><td><code>restitution</code></td><td>Elasticidad en colisión con paredes</td><td>0.0 – 1.0</td></tr>
+  <tr><td>Radio suavizado</td><td><code>smoothingRadius</code> (h)</td><td>Influencia entre partículas</td><td>1.0 – 5.0</td></tr>
+  <tr><td>Partículas</td><td><code>particleCount</code> (N)</td><td>Número de partículas</td><td>10 – 200</td></tr>
+</table>
+
+<div class="callout warn">
+  <div class="callout-title">Comportamiento horizontal</div>
+  <p>Cuando el teléfono está boca arriba o boca abajo, <code>|az|</code> domina sobre <code>ax</code> y <code>ay</code>. El controlador detecta esto y aplica una fuerza centrífuga suave que distribuye las partículas uniformemente por el anillo, reduciendo el brillo proporcionalmente al <code>fillRatio</code>.</p>
+</div>
+
+<h3>GlyphController — Patrones LED</h3>
+<p>Los 36 canales del Phone 3a (DEVICE_24111) están organizados en 3 arcos físicos. Cada condición climática activa un patrón diferente.</p>
+
+<table>
+  <tr><th>Condición</th><th>Patrón</th><th>Descripción</th></tr>
+  <tr><td>Lluvia</td><td>Rotación ×2</td><td>2 puntos girando en el anillo CAB con cola de fade</td></tr>
+  <tr><td>Lluvia fuerte</td><td>Rotación ×3</td><td>Igual pero 3 puntos, más rápido</td></tr>
+  <tr><td>Tormenta</td><td>Relámpago</td><td>Flash alternando segmentos pares/impares, 3 ciclos</td></tr>
+  <tr><td>Calor extremo</td><td>Pulso A</td><td>Solo arco A (derecho), fade in/out lento, ×3</td></tr>
+  <tr><td>Viento</td><td>Rotación ×1</td><td>1 punto girando muy rápido con cola larga</td></tr>
+  <tr><td>Frío</td><td>Respiración</td><td>Los 3 arcos al 60%, fade in/out muy lento, ×1</td></tr>
+  <tr><td>Neblina</td><td>Tenue estático</td><td>Los 3 arcos al 25%, fade muy lento, se mantienen 4s</td></tr>
+  <tr><td>Aguanieve</td><td>Destellos aleatorios</td><td>1 punto por ciclo en posición aleatoria del anillo</td></tr>
+  <tr><td>Nieve</td><td>Destellos dispersos</td><td>Grupos de 3 segmentos aleatorios, pausas largas</td></tr>
+  <tr><td>Evento próximo</td><td>Secuencial suave</td><td>C→A→B con fade, solo si el clima no es ideal</td></tr>
+</table>
+
+<div class="callout">
+  <div class="callout-title">Mapa angular de los arcos</div>
+  <p>Arco C (índices 0–19): <strong>10° a 60°</strong> — superior izquierda<br>
+  Arco A (índices 20–30): <strong>165° a 215°</strong> — inferior izquierda / abajo<br>
+  Arco B (índices 31–35): <strong>305° a 330°</strong> — derecha</p>
+</div>
+
+<!-- ── Sistema de glifos ── -->
+<h2>Sistema de glifos</h2>
+<p>Todos los íconos de la app son matrices de puntos diseñadas en <strong>GlyphFactory</strong> y exportadas como JSON. El formato es:</p>
+
+<pre>{
+  <span class="str">"name"</span>: <span class="str">"rain"</span>,
+  <span class="str">"category"</span>: <span class="str">"weather"</span>,
+  <span class="str">"cols"</span>: <span class="num">12</span>, <span class="str">"rows"</span>: <span class="num">12</span>,
+  <span class="str">"palette"</span>: [<span class="str">"#00e5a0"</span>, <span class="str">"#f5a623"</span>, ...],
+  <span class="str">"data"</span>: [[<span class="kw">null</span>, <span class="num">3</span>, <span class="kw">null</span>, ...], ...]  <span class="cm">// null = vacío, Int = índice paleta</span>
+}</pre>
+
+<table>
+  <tr><th>Archivo</th><th>Categoría</th><th>Tamaño</th><th>Cantidad</th></tr>
+  <tr><td><code>weather.json</code></td><td>Clima</td><td>12×12</td><td>17 glifos</td></tr>
+  <tr><td><code>ui.json</code></td><td>Interfaz</td><td>7×7</td><td>9 glifos</td></tr>
+  <tr><td><code>accessories.json</code></td><td>Accesorios</td><td>9×9</td><td>8 glifos</td></tr>
+  <tr><td><code>transport.json</code></td><td>Transporte</td><td>9×9</td><td>4 glifos</td></tr>
+  <tr><td><code>clothes.json</code></td><td>Ropa</td><td>9×9</td><td>15 glifos</td></tr>
+</table>
+
+<!-- ── Notificaciones ── -->
+<h2>Notificaciones</h2>
+<p>Dos tipos de notificaciones enriquecidas con <code>RemoteViews</code>, tipografía Ndot-57 renderizada como Bitmap y glifos de clima como íconos.</p>
+
+<div class="card">
+  <h4>Resumen diario <span class="badge ok" style="margin-left:8px">WorkManager</span></h4>
+  <p style="font-size:13px;color:var(--text2);margin-top:6px">Se programa a la hora configurada en Settings. Muestra temperatura, condición, ventana de lluvia, hasta 4 prendas recomendadas y sugerencia de transporte.</p>
+</div>
+<div class="card">
+  <h4>Alerta de evento <span class="badge blue" style="margin-left:8px">AlarmManager exacto</span></h4>
+  <p style="font-size:13px;color:var(--text2);margin-top:6px">Se programa 1 hora antes de cada evento del calendario que esté fuera de casa. Misma estructura visual que el resumen diario pero personalizada para el evento específico.</p>
+</div>
+
+<!-- ── Ícono dinámico ── -->
+<h2>Ícono dinámico</h2>
+<p>La app cambia su ícono del launcher automáticamente según la condición climática usando <code>ActivityAlias</code>. Hay 11 estados con variantes de modo claro y oscuro generadas por script Python desde los JSON de glifos.</p>
+
+<table>
+  <tr><th>Alias</th><th>Condiciones</th></tr>
+  <tr><td><code>IconSunny</code></td><td>SUNNY</td></tr>
+  <tr><td><code>IconClearNight</code></td><td>CLEAR_NIGHT</td></tr>
+  <tr><td><code>IconCloudyDay</code></td><td>PARTLY_CLOUDY, MOSTLY_CLOUDY</td></tr>
+  <tr><td><code>IconCloudyNight</code></td><td>PARTLY_CLOUDY_NIGHT, MOSTLY_CLOUDY_NIGHT</td></tr>
+  <tr><td><code>IconOvercast</code></td><td>OVERCAST</td></tr>
+  <tr><td><code>IconRain</code></td><td>DRIZZLE, RAIN, HEAVY_RAIN</td></tr>
+  <tr><td><code>IconStorm</code></td><td>STORM</td></tr>
+  <tr><td><code>IconWind</code></td><td>WIND</td></tr>
+  <tr><td><code>IconFog</code></td><td>FOG</td></tr>
+  <tr><td><code>IconCold</code></td><td>COLD, SNOW, SLEET</td></tr>
+  <tr><td><code>IconHot</code></td><td>HOT</td></tr>
+</table>
+
+<!-- ── Dependencias ── -->
+<h2>Dependencias principales</h2>
+<table>
+  <tr><th>Librería</th><th>Versión</th><th>Uso</th></tr>
+  <tr><td>Jetpack Compose BOM</td><td>latest</td><td>UI declarativa</td></tr>
+  <tr><td>Retrofit + Gson</td><td>2.11.0</td><td>API Open-Meteo</td></tr>
+  <tr><td>WorkManager</td><td>2.10.1</td><td>Notificación diaria background</td></tr>
+  <tr><td>Glance AppWidget</td><td>1.1.1</td><td>Widgets de pantalla de inicio</td></tr>
+  <tr><td>DataStore Preferences</td><td>1.1.1</td><td>Persistencia de configuración</td></tr>
+  <tr><td>Play Services Location</td><td>21.3.0</td><td>GPS automático</td></tr>
+  <tr><td>Nothing Glyph SDK</td><td>2.0 (AAR)</td><td>Control de LEDs físicos</td></tr>
+  <tr><td>Navigation Compose</td><td>2.8.9</td><td>Navegación entre pantallas</td></tr>
+</table>
+
+<hr class="divider">
+<p class="muted" style="text-align:center;font-family:var(--mono);font-size:11px">
+  meteoroglyph · by Hex (@RemiH06) · iroFactory · AGPL-3.0
+</p>
+
+<script>
+let dark = true;
+function toggle() {
+  dark = !dark;
+  document.body.classList.toggle('dark', dark);
+  document.querySelector('.theme-btn').textContent = dark ? '☀ Light' : '☾ Dark';
+  rebuildNodes();
+}
+
+const canvas = document.getElementById('metro-bg');
+const ctx = canvas.getContext('2d');
+let W, H, nodes = [];
+const COLS_D = ['#ff4560','#f5a623','#00e5a0'];
+const COLS_L = ['#8B1A1A','#C4691A','#2A6B3A'];
+
+function rebuildNodes() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  const cols = dark ? COLS_D : COLS_L;
+  nodes = Array.from({length:30}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+    r: 2+Math.random()*2.5,
+    col: cols[Math.floor(Math.random()*cols.length)],
+    alpha: 0.3+Math.random()*.4,
+  }));
+}
+
+function drawBg() {
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = dark ? '#0a0c10' : '#F5F0E8';
+  ctx.fillRect(0,0,W,H);
+  const gc = dark ? 'rgba(30,37,53,0.45)' : 'rgba(200,191,176,0.25)';
+  ctx.strokeStyle = gc; ctx.lineWidth = 1;
+  for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  nodes.forEach(n=>{ n.x+=n.vx; n.y+=n.vy; if(n.x<0||n.x>W)n.vx*=-1; if(n.y<0||n.y>H)n.vy*=-1; });
+  const maxD = Math.min(W,H)*0.18;
+  for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++) {
+    const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<maxD){
+      const s=1-d/maxD;
+      ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y);
+      ctx.strokeStyle = dark ? `rgba(30,37,53,${s*.8})` : `rgba(200,191,176,${s*.6})`;
+      ctx.lineWidth = s*1.5; ctx.stroke();
+    }
+  }
+  nodes.forEach(n=>{
+    const s=n.r*2;
+    if(dark){ const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,s*2.5); g.addColorStop(0,n.col+'44'); g.addColorStop(1,n.col+'00'); ctx.beginPath(); ctx.arc(n.x,n.y,s*2.5,0,Math.PI*2); ctx.fillStyle=g; ctx.fill(); }
+    ctx.fillStyle=n.col; ctx.globalAlpha=n.alpha; ctx.fillRect(n.x-s/2,n.y-s/2,s,s); ctx.globalAlpha=1;
+  });
+  requestAnimationFrame(drawBg);
+}
+
+window.addEventListener('resize', rebuildNodes);
+rebuildNodes();
+requestAnimationFrame(drawBg);
+</script>
+</body>
+</html>
