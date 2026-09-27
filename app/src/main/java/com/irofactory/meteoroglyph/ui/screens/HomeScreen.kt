@@ -21,9 +21,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.irofactory.meteoroglyph.data.glyph.GlyphRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherCondition
 import com.irofactory.meteoroglyph.data.weather.WeatherState
-import com.irofactory.meteoroglyph.fluid.FluidGlyphController
-import com.irofactory.meteoroglyph.fluid.FluidMatrixView
-import com.irofactory.meteoroglyph.fluid.FluidParams
 import com.irofactory.meteoroglyph.ui.components.*
 import com.irofactory.meteoroglyph.ui.theme.*
 import com.irofactory.meteoroglyph.viewmodel.HomeViewModel
@@ -38,17 +35,6 @@ fun HomeScreen(
     val uiState   by vm.uiState.collectAsStateWithLifecycle()
     val glyphRepo = remember { GlyphRepository(context) }
     val mc        = metroColors
-
-    // ── Estado del fluido ─────────────────────────────────────────────────────
-    var glyphFluidActive by remember { mutableStateOf(false) }
-    val fluidGlyphController = remember { FluidGlyphController(context) }
-
-    // Limpiar al salir de la pantalla
-    DisposableEffect(Unit) {
-        onDispose {
-            if (glyphFluidActive) fluidGlyphController.stop()
-        }
-    }
 
     // ── Permisos ──────────────────────────────────────────────────────────────
     val calendarPermission = rememberLauncherForActivityResult(
@@ -121,28 +107,6 @@ fun HomeScreen(
                     items     = uiState.outfitItems
                 )
             }
-        }
-
-        // ── Fluid Matrix — siempre visible, centrada ──────────────────────────
-        Box(
-            modifier         = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            val fluidParams = uiState.fluidParams
-            FluidMatrixView(
-                params        = fluidParams,
-                glyphActive   = glyphFluidActive,
-                onToggleGlyph = {
-                    glyphFluidActive = !glyphFluidActive
-                    if (glyphFluidActive) {
-                        fluidGlyphController.start(fluidParams)
-                    } else {
-                        fluidGlyphController.stop()
-                    }
-                }
-            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))

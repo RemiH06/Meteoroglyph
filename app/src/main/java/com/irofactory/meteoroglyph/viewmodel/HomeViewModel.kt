@@ -12,8 +12,8 @@ import com.irofactory.meteoroglyph.data.settings.AppSettings
 import com.irofactory.meteoroglyph.data.settings.SettingsRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherRepository
 import com.irofactory.meteoroglyph.data.weather.WeatherState
-import com.irofactory.meteoroglyph.fluid.FluidParams
 import com.irofactory.meteoroglyph.glyph.GlyphController
+import com.irofactory.meteoroglyph.glyph.GlyphMatrixController
 import com.irofactory.meteoroglyph.icon.IconUpdater
 import com.irofactory.meteoroglyph.ui.components.OutfitItem
 import com.irofactory.meteoroglyph.worker.EventAlarmScheduler
@@ -30,7 +30,6 @@ data class HomeUiState(
     val nextEvent: CalendarEvent?         = null,
     val outfitItems: List<OutfitItem>     = emptyList(),
     val transitRec: TransitRecommendation = TransitRecommendation.PUBLIC_OK,
-    val fluidParams: FluidParams          = FluidParams(),
     val error: String?                    = null
 )
 
@@ -43,6 +42,7 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
 
     // Inyectado desde MainActivity después de crear el ViewModel
     var glyphController: GlyphController? = null
+    var glyphMatrixController: GlyphMatrixController? = null
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -100,27 +100,23 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 nextEvent   = nextEvent,
                 outfitItems = outfitItems,
                 transitRec  = transitRec,
-                fluidParams = FluidParams(
-                    fillRatio       = currentSettings.fluidFillRatio,
-                    viscosity       = currentSettings.fluidViscosity,
-                    stiffness       = currentSettings.fluidStiffness,
-                    restitution     = currentSettings.fluidRestitution,
-                    smoothingRadius = currentSettings.fluidSmoothingRadius,
-                    particleCount   = currentSettings.fluidParticleCount
-                ),
                 error       = error
             )
 
             // Actualizar ícono según clima
             weather?.let { IconUpdater.update(getApplication(), it) }
 
-            // ── Glyph LEDs ────────────────────────────────────────────────────
+            // ── Glyph LEDs (3a, arcos) ────────────────────────────────────────
             // Activa el patrón si hay evento próximo Y el clima no es ideal
             if (nextEvent != null && weather != null) {
                 glyphController?.notifyUpcomingEvent(weather)
             } else {
                 glyphController?.stopPattern()
             }
+
+            // ── Glyph Matrix (Phone 3, 25x25) ─────────────────────────────────
+            // Muestra el glifo del clima actual, sin condicionar a eventos
+            weather?.let { glyphMatrixController?.notifyWeather(it) }
 
             // Programar alarmas de eventos
             viewModelScope.launch(Dispatchers.IO) {

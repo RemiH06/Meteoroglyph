@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.irofactory.meteoroglyph.data.settings.AppSettings
 import com.irofactory.meteoroglyph.data.settings.SettingsRepository
 import com.irofactory.meteoroglyph.glyph.GlyphController
+import com.irofactory.meteoroglyph.glyph.GlyphMatrixController
 import com.irofactory.meteoroglyph.ui.navigation.NavGraph
 import com.irofactory.meteoroglyph.ui.theme.MeteoroglyphTheme
 import com.irofactory.meteoroglyph.ui.theme.ThemeMode
@@ -28,15 +29,21 @@ class MainActivity : ComponentActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var glyphController: GlyphController
+    private lateinit var glyphMatrixController: GlyphMatrixController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // ── Glyph ─────────────────────────────────────────────────────────────
+        // ── Glyph (3a, arcos) ─────────────────────────────────────────────────
         glyphController = GlyphController.getInstance(this)
         glyphController.init()
         homeViewModel.glyphController = glyphController
+
+        // ── Glyph Matrix (Phone 3, 25x25) ────────────────────────────────────
+        glyphMatrixController = GlyphMatrixController.getInstance(this)
+        glyphMatrixController.init()
+        homeViewModel.glyphMatrixController = glyphMatrixController
 
         // ── Permiso de notificaciones ─────────────────────────────────────────
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -77,5 +84,6 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         glyphController.close()
+        glyphMatrixController.close()
     }
 }

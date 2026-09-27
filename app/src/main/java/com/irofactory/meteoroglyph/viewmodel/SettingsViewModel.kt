@@ -72,13 +72,6 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setThemeMode(mode: String) = save { it.copy(themeMode = mode) }
 
-    fun setFluidFillRatio(v: Float)       = save { it.copy(fluidFillRatio = v) }
-    fun setFluidViscosity(v: Float)       = save { it.copy(fluidViscosity = v) }
-    fun setFluidStiffness(v: Float)       = save { it.copy(fluidStiffness = v) }
-    fun setFluidRestitution(v: Float)     = save { it.copy(fluidRestitution = v) }
-    fun setFluidSmoothingRadius(v: Float) = save { it.copy(fluidSmoothingRadius = v) }
-    fun setFluidParticleCount(v: Int)     = save { it.copy(fluidParticleCount = v) }
-
     private fun save(transform: (AppSettings) -> AppSettings) {
         viewModelScope.launch {
             repo.save(transform(settings.value))

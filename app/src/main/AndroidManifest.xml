@@ -40,6 +40,28 @@
             </intent-filter>
         </receiver>
 
+        <!-- ── Glyph Toy: consulta de clima (Nothing Phone 3) ── -->
+        <service
+            android:name=".glyph.toy.WeatherGlyphToyService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.nothing.glyph.TOY"/>
+            </intent-filter>
+            <meta-data
+                android:name="com.nothing.glyph.toy.name"
+                android:resource="@string/toy_name_weather"/>
+            <meta-data
+                android:name="com.nothing.glyph.toy.image"
+                android:resource="@mipmap/ic_weather_cloudy_day"/>
+            <meta-data
+                android:name="com.nothing.glyph.toy.summary"
+                android:resource="@string/toy_summary_weather"/>
+            <meta-data
+                android:name="com.nothing.glyph.toy.longpress"
+                android:value="1"/>
+        </service>
+
         <receiver
             android:name=".widget.WeatherInfoWidgetReceiver"
             android:exported="true">

@@ -279,29 +279,51 @@ fun SettingsScreen(
             MetroButton("detener") { glyphController.stopPattern() }
         }
 
-        // ── Simulación de fluido ──────────────────────────────────────────────────
-        SettingsSection(title = "SIMULACIÓN DE FLUIDO") {
+        // ── Test Glyph Matrix (Phone 3) ───────────────────────────────────────
+        SettingsSection(title = "TEST GLYPH MATRIX (PHONE 3)") {
             val mc = metroColors
             Text(
-                text       = "Parámetros de la simulación en pantalla y Glyph",
+                text       = "Prueba cada glifo climático en la matriz 25x25",
                 fontFamily = SpaceMono,
                 fontSize   = 9.sp,
                 color      = mc.textSecondary
             )
             Spacer(Modifier.height(4.dp))
 
-            ThresholdRow("Llenado (%)", (settings.fluidFillRatio * 100).toInt(), 10, 200,
-                mc.blue, null, mc.blue) { vm.setFluidFillRatio(it / 100f) }
-            ThresholdRow("Viscosidad",       (settings.fluidViscosity * 100).toInt(),        1, 200,
-                mc.purple,  null, mc.purple)  { vm.setFluidViscosity(it / 100f) }
-            ThresholdRow("Rigidez",          (settings.fluidStiffness * 100).toInt(),       10, 500,
-                mc.warn,    null, mc.warn)    { vm.setFluidStiffness(it / 100f) }
-            ThresholdRow("Rebote (%)",       (settings.fluidRestitution * 100).toInt(),      0, 100,
-                mc.accent,  null, mc.accent)  { vm.setFluidRestitution(it / 100f) }
-            ThresholdRow("Radio suavizado",  (settings.fluidSmoothingRadius * 10).toInt(),  10, 50,
-                mc.orange,  null, mc.orange)  { vm.setFluidSmoothingRadius(it / 10f) }
-            ThresholdRow("Partículas",       settings.fluidParticleCount,                   10, 200,
-                mc.textPrimary, null, mc.textPrimary) { vm.setFluidParticleCount(it) }
+            val glyphMatrixController = remember {
+                com.irofactory.meteoroglyph.glyph.GlyphMatrixController.getInstance(context)
+            }
+
+            fun makeState(
+                condition: WeatherCondition,
+                temp: Int = 22,
+                rain: Int = 0,
+                wind: Int = 10
+            ) = WeatherState(
+                tempCelsius     = temp,
+                condition       = condition,
+                rainProbability = rain,
+                windSpeedKmh    = wind,
+                humidity        = 60,
+                rainWindow      = null,
+                isDay           = true
+            )
+
+            listOf(
+                "despejado"       to makeState(WeatherCondition.SUNNY),
+                "nublado"         to makeState(WeatherCondition.OVERCAST),
+                "lluvia"          to makeState(WeatherCondition.RAIN,       rain = 60),
+                "tormenta"        to makeState(WeatherCondition.STORM,      rain = 90),
+                "calor extremo"   to makeState(WeatherCondition.HOT,        temp = 36),
+                "viento"          to makeState(WeatherCondition.WIND,       wind = 50),
+                "frío"            to makeState(WeatherCondition.COLD,       temp = 5),
+                "neblina"         to makeState(WeatherCondition.FOG),
+                "nieve"           to makeState(WeatherCondition.SNOW),
+            ).forEach { (label, state) ->
+                MetroButton(label) { glyphMatrixController.notifyWeather(state) }
+            }
+
+            MetroButton("apagar") { glyphMatrixController.turnOff() }
         }
 
         Spacer(Modifier.height(64.dp))

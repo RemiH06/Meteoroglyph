@@ -32,13 +32,6 @@ class SettingsRepository(private val context: Context) {
         val NOTIF_HOUR           = intPreferencesKey("notif_hour")
         val NOTIF_MINUTE         = intPreferencesKey("notif_minute")
         val THEME_MODE           = stringPreferencesKey("theme_mode")
-        // ── Fluido ────────────────────────────────────────────────────────────
-        val FLUID_FILL_RATIO        = floatPreferencesKey("fluid_fill_ratio")
-        val FLUID_VISCOSITY         = floatPreferencesKey("fluid_viscosity")
-        val FLUID_STIFFNESS         = floatPreferencesKey("fluid_stiffness")
-        val FLUID_RESTITUTION       = floatPreferencesKey("fluid_restitution")
-        val FLUID_SMOOTHING_RADIUS  = floatPreferencesKey("fluid_smoothing_radius")
-        val FLUID_PARTICLE_COUNT    = intPreferencesKey("fluid_particle_count")
     }
 
     val settings: Flow<AppSettings> = context.dataStore.data.map { prefs ->
@@ -57,14 +50,7 @@ class SettingsRepository(private val context: Context) {
             uberRainThresholdPct = prefs[Keys.UBER_RAIN_THRESHOLD] ?: 60,
             notificationHour     = prefs[Keys.NOTIF_HOUR]        ?: 7,
             notificationMinute   = prefs[Keys.NOTIF_MINUTE]      ?: 0,
-            themeMode            = prefs[Keys.THEME_MODE]        ?: "SYSTEM",
-            // ── Fluido ────────────────────────────────────────────────────────
-            fluidFillRatio       = prefs[Keys.FLUID_FILL_RATIO]       ?: 0.30f,
-            fluidViscosity       = prefs[Keys.FLUID_VISCOSITY]        ?: 0.50f,
-            fluidStiffness       = prefs[Keys.FLUID_STIFFNESS]        ?: 1.00f,
-            fluidRestitution     = prefs[Keys.FLUID_RESTITUTION]      ?: 0.40f,
-            fluidSmoothingRadius = prefs[Keys.FLUID_SMOOTHING_RADIUS] ?: 2.50f,
-            fluidParticleCount   = prefs[Keys.FLUID_PARTICLE_COUNT]   ?: 80
+            themeMode            = prefs[Keys.THEME_MODE]        ?: "SYSTEM"
         )
     }
 
@@ -85,13 +71,6 @@ class SettingsRepository(private val context: Context) {
             prefs[Keys.NOTIF_HOUR]          = settings.notificationHour
             prefs[Keys.NOTIF_MINUTE]        = settings.notificationMinute
             prefs[Keys.THEME_MODE]          = settings.themeMode
-            // ── Fluido ────────────────────────────────────────────────────────
-            prefs[Keys.FLUID_FILL_RATIO]       = settings.fluidFillRatio
-            prefs[Keys.FLUID_VISCOSITY]        = settings.fluidViscosity
-            prefs[Keys.FLUID_STIFFNESS]        = settings.fluidStiffness
-            prefs[Keys.FLUID_RESTITUTION]      = settings.fluidRestitution
-            prefs[Keys.FLUID_SMOOTHING_RADIUS] = settings.fluidSmoothingRadius
-            prefs[Keys.FLUID_PARTICLE_COUNT]   = settings.fluidParticleCount
         }
     }
 

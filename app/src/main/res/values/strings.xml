@@ -2,4 +2,6 @@
     <string name="app_name">Meteoroglyph</string>
     <string name="widget_weather_info_description">Clima y outfit del día</string>
     <string name="widget_weather_circle_description">Ícono de clima actual</string>
+    <string name="toy_name_weather">Meteoroglyph</string>
+    <string name="toy_summary_weather">Clima actual. Mantén presionado para ver la temperatura, mantén presionado el botón Glyph para refrescar.</string>
 </resources>

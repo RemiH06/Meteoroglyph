@@ -6,8 +6,11 @@ Contexto completo del proyecto para continuar desarrollo en Claude Code.
 
 ## Proyecto
 
-App Android personal para **Nothing Phone 3a (A059, DEVICE_24111, Nothing OS 4.0 / Android 16)**.
-Combina clima real, Google Calendar y la interfaz Glyph LED para recomendar outfits diarios.
+App Android personal para **Nothing Phone 3 (DEVICE_23112, Glyph Matrix 25x25, Nothing OS / Android 16)**.
+Combina clima real, Google Calendar y la interfaz Glyph para recomendar outfits diarios.
+
+El código para Nothing Phone 3a (A059, DEVICE_24111, 36 canales en arco) se conserva
+porque sigue siendo parte del repo, pero ya no es el dispositivo activo del autor.
 
 - **Package:** `com.irofactory.meteoroglyph`
 - **Repo:** https://github.com/RemiH06/Meteoroglyph
@@ -40,12 +43,11 @@ app/src/main/
 │   │   ├── outfit/                  OutfitEngine (lógica de recomendación, umbrales dinámicos)
 │   │   ├── settings/                AppSettings, SettingsRepository (DataStore)
 │   │   └── weather/                 WeatherRepository (Open-Meteo), WeatherModels, WeatherCondition
-│   ├── fluid/
-│   │   ├── FluidSimulation.kt       Motor SPH (partículas, presión, viscosidad, gravedad)
-│   │   ├── FluidGlyphController.kt  Puente SPH ↔ LEDs físicos + acelerómetro
-│   │   └── FluidMatrixView.kt       Canvas 25×25 circular en Compose (loop withFrameMillis)
 │   ├── glyph/
-│   │   └── GlyphController.kt       9 patrones LED climáticos (singleton)
+│   │   ├── GlyphController.kt       9 patrones LED climáticos, arcos 3a (singleton)
+│   │   ├── GlyphMatrixController.kt Glifo de clima en la Glyph Matrix 25x25, Phone 3 (singleton)
+│   │   └── toy/
+│   │       └── WeatherGlyphToyService.kt  Glyph Toy: clima con el botón trasero
 │   ├── icon/
 │   │   └── IconUpdater.kt           Ícono dinámico via ActivityAlias (11 estados)
 │   ├── ui/
@@ -59,11 +61,13 @@ app/src/main/
 │   └── worker/                      WeatherCheckWorker, EventAlarmScheduler,
 │                                    EventAlarmReceiver, BootReceiver
 └── assets/glyphs/
-    ├── weather.json     — 17 glifos 12×12
+    ├── weather.json     — 17 glifos 12×12 (se reusan en la Glyph Matrix, el SDK escala el bitmap)
     ├── ui.json          — 9 glifos 7×7
     ├── accessories.json — 8 glifos 9×9
     ├── transport.json   — 4 glifos 9×9
-    └── clothes.json     — 15 glifos 9×9
+    ├── clothes.json     — 15 glifos 9×9
+    ├── weather25x25.json         — exportado de GlyphFactory, solo tiene "storm1", sin conectar al repo
+    └── glyphfactory_library.json — exportado de GlyphFactory, glifos sueltos sin relación, sin conectar
 ```
 
 ---
@@ -114,7 +118,42 @@ Renderizado:
 
 ---
 
-## Glyph SDK — Nothing Phone 3a
+## Glyph Matrix — Nothing Phone 3 (dispositivo activo)
+
+Dispositivo: **DEVICE_23112** (identificador real de Phone 3 en el SDK, a pesar del nombre),
+matriz de 25x25, se obtiene con `Common.getDeviceMatrixLength()`.
+
+API distinta a la de los arcos: `GlyphMatrixManager` (no `GlyphManager`), con
+`GlyphMatrixObject` / `GlyphMatrixFrame` para componer capas (imagen o texto) y
+`setAppMatrixFrame` para dibujar desde la app sin chocar con los Glyph Toys del sistema
+(que tienen prioridad de despliegue si el usuario usa el botón Glyph).
+
+`GlyphMatrixController` es **singleton** (`GlyphMatrixController.getInstance(context)`).
+Siempre verificar `Common.is23112()` antes de usar el SDK.
+Reusa los 17 glifos de `weather.json` renderizados a Bitmap 1:1 vía `GlyphBitmapRenderer`,
+el SDK se encarga de escalarlos a la matriz real.
+
+### Glyph Toy (`WeatherGlyphToyService`)
+
+Servicio declarado en el manifest con `<action android:name="com.nothing.glyph.TOY"/>` y
+metadata `com.nothing.glyph.toy.name` / `.image` / `.summary` / `.longpress`. El sistema
+lo bindea cuando el usuario lo selecciona en el carrusel del botón Glyph (short-press cicla
+entre toys, ya lo maneja el sistema, no la app).
+
+Interacción vía `Messenger` + `Handler`, mensajes `GlyphToy.MSG_GLYPH_TOY` con el evento en
+`Bundle.getString(GlyphToy.MSG_GLYPH_TOY_DATA)`:
+- Selección del toy → refresca el clima y muestra el glifo
+- `EVENT_ACTION_DOWN` (mantener presionado) → muestra la temperatura en texto
+- `EVENT_ACTION_UP` (soltar) → vuelve al glifo
+- `EVENT_CHANGE` (long-press del botón Glyph) → fuerza un refresh contra la API
+
+Referencia verificada contra el repo oficial de Nothing (no asumir de memoria si se
+vuelve a tocar este servicio): [GlyphMatrix-Developer-Kit](https://github.com/Nothing-Developer-Programme/GlyphMatrix-Developer-Kit),
+[GlyphMatrix-Example-Project](https://github.com/Nothing-Developer-Programme/GlyphMatrix-Example-Project).
+
+---
+
+## Glyph SDK — Nothing Phone 3a (legado, ya no es el dispositivo del autor)
 
 Dispositivo: **DEVICE_24111** (A059), 36 canales totales.
 
@@ -127,18 +166,6 @@ Mapa físico de los arcos:
 Siempre verificar `Common.is24111()` antes de usar el SDK.
 
 Patrones implementados: `rain`, `storm`, `heat`, `wind`, `cold`, `fog`, `sleet`, `snow`, `upcomingEvent`.
-
----
-
-## Simulación de fluidos (SPH)
-
-`FluidSimulation` — motor de física con N partículas, kernels Poly6/Spiky/Viscosity.
-`FluidGlyphController` — mapea densidad de partículas a brillo de cada LED via posición angular.
-`FluidMatrixView` — Canvas 25×25 circular animado con `withFrameMillis`, lee acelerómetro.
-
-Parámetros configurables en Settings: `fillRatio`, `viscosity`, `stiffness`, `restitution`, `smoothingRadius`, `particleCount`.
-
-Comportamiento horizontal: cuando `|az|` domina, se aplica fuerza centrífuga que distribuye las partículas con brillo proporcional al `fillRatio`.
 
 ---
 
@@ -178,7 +205,7 @@ PNGs generados con `generate_icons.py` (requiere Pillow) en `mipmap-xxxhdpi/` y 
 - Español mexicano en todo texto de UI y comentarios
 - Sin guión largo (`—`) en ningún texto generado
 - `metroColors` en vez de colores hardcodeados
-- `GlyphController.getInstance(context)` — nunca instanciar directamente
+- `GlyphController.getInstance(context)` / `GlyphMatrixController.getInstance(context)` — nunca instanciar directamente
 
 ---
 
@@ -203,8 +230,18 @@ implementation(files("libs/glyph-matrix-sdk-2.0.aar"))
 
 ## Pendientes / ideas futuras
 
-- Soporte Nothing Phone 3 / 3+ con Glyph Matrix 25×25 real
-- Simulación de fluidos en matriz 25×25 física
+- Diseñar el set de 17 glifos climáticos nativos a 25x25 en GlyphFactory (hoy se reusan
+  escalados los de 12x12, `weather25x25.json` quedó a medias con un solo glifo)
 - Widget de galería — imagen → matriz de puntos via average pooling
 - Historial de outfits y aprendizaje
 - Migrar dependencias al version catalog de Gradle
+
+## Fuera de este proyecto (movido a una app nueva)
+
+La simulación de fluidos (SPH) que vivía en `fluid/` se quitó de Meteoroglyph. El plan es
+llevarla a un proyecto nuevo (Glyph Matrix 25x25) enfocado en juguetes personalizados:
+1. La simulación de fluidos como primer juguete (el código sigue disponible en el historial
+   de git de este repo, commit `1b0beaf` en adelante)
+2. Una animación tipo esfera de NCS que reaccione al audio que se esté reproduciendo
+3. Una glyph factory integrada en la propia app para poner cualquier imagen del dispositivo
+   en la matriz (esto último todavía solo es idea, no hay fecha)
