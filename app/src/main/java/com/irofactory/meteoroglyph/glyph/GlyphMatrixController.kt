@@ -9,9 +9,7 @@ import com.irofactory.meteoroglyph.ui.components.GlyphBitmapRenderer
 import com.nothing.ketchum.Common
 import com.nothing.ketchum.Glyph
 import com.nothing.ketchum.GlyphException
-import com.nothing.ketchum.GlyphMatrixFrame
 import com.nothing.ketchum.GlyphMatrixManager
-import com.nothing.ketchum.GlyphMatrixObject
 
 /**
  * GlyphMatrixController
@@ -36,7 +34,7 @@ class GlyphMatrixController(private val context: Context) {
             }
         }
 
-        private const val ICON_SIZE_PX = 32
+        private const val MATRIX_SIZE = 25
     }
 
     private val tag = "GlyphMatrixController"
@@ -79,23 +77,10 @@ class GlyphMatrixController(private val context: Context) {
     /** Muestra el glifo correspondiente al clima actual */
     fun notifyWeather(weather: WeatherState) {
         if (!isReady()) return
-        val glyph = glyphRepo.getGlyph("weather", weather.condition.toGlyphName()) ?: return
-        val bitmap = GlyphBitmapRenderer.render(
-            glyph    = glyph,
-            sizePx   = ICON_SIZE_PX,
-            tintArgb = android.graphics.Color.WHITE
-        )
+        val glyph = glyphRepo.getGlyph("weather25x25", weather.condition.toGlyphName()) ?: return
         try {
-            val obj = GlyphMatrixObject.Builder()
-                .setImageSource(bitmap)
-                .setScale(100)
-                .setPosition(0, 0)
-                .setBrightness(255)
-                .build()
-            val frame = GlyphMatrixFrame.Builder()
-                .addTop(obj)
-                .build(context)
-            manager?.setAppMatrixFrame(frame.render())
+            val array = GlyphBitmapRenderer.renderToMatrixArray(glyph, MATRIX_SIZE)
+            manager?.setAppMatrixFrame(array)
         } catch (e: GlyphException) {
             Log.e(tag, "Error al mostrar glifo: ${e.message}")
         }

@@ -53,7 +53,7 @@
                 android:resource="@string/toy_name_weather"/>
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@mipmap/ic_weather_cloudy_day"/>
+                android:resource="@drawable/ic_toy_weather"/>
             <meta-data
                 android:name="com.nothing.glyph.toy.summary"
                 android:resource="@string/toy_summary_weather"/>

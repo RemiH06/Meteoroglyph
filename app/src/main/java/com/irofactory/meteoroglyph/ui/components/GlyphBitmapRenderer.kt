@@ -43,6 +43,31 @@ object GlyphBitmapRenderer {
         return bitmap
     }
 
+    /**
+     * Convierte un glifo directamente a un arreglo de brillo (0-255 por celda),
+     * uno a uno, sin pasar por Bitmap. Pensado para matrices físicas reales
+     * (Glyph Matrix) donde cada celda del JSON es un LED, no un círculo dibujado.
+     * El glifo debe tener exactamente `size` columnas y filas.
+     *
+     * El LED es monocromático, así que el color de paleta no se usa como brillo
+     * (algunos colores del set, como el gris de contorno, se ven correctos en
+     * pantalla pero saldrían muy tenues si se leyera su luminancia). Cualquier
+     * celda no nula se manda a brillo máximo, solo se respeta el alpha si el
+     * glifo define explícitamente una celda semitransparente.
+     */
+    fun renderToMatrixArray(glyph: ParsedGlyph, size: Int): IntArray {
+        val result = IntArray(size * size)
+        val rows = glyph.dots.size
+        val cols = glyph.dots.firstOrNull()?.size ?: return result
+        for (r in 0 until minOf(rows, size)) {
+            for (c in 0 until minOf(cols, size)) {
+                val color = glyph.dots[r][c] ?: continue
+                result[r * size + c] = (255f * color.alpha).toInt().coerceIn(0, 255)
+            }
+        }
+        return result
+    }
+
     private fun composeColorToArgb(color: androidx.compose.ui.graphics.Color): Int {
         return android.graphics.Color.argb(
             (color.alpha * 255).toInt(),

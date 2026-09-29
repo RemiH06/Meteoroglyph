@@ -230,8 +230,20 @@ implementation(files("libs/glyph-matrix-sdk-2.0.aar"))
 
 ## Pendientes / ideas futuras
 
-- Diseñar el set de 17 glifos climáticos nativos a 25x25 en GlyphFactory (hoy se reusan
-  escalados los de 12x12, `weather25x25.json` quedó a medias con un solo glifo)
+- El set de 17 glifos climáticos nativos a 25x25 ya está en `weather25x25.json`, pulido
+  a mano en GlyphFactory (`GlyphMatrixController` y el Glyph Toy ya leen de ahí, no de
+  `weather.json`). Es probable que se vuelva a retocar; si se rehacen, mantener el mismo
+  espaciado simétrico: misma cantidad de celdas nulas arriba que abajo, y misma cantidad
+  a la izquierda que a la derecha del ícono dentro del lienzo de 25x25.
+- La Glyph Matrix real del Phone 3 no ilumina las 625 celdas del lienzo, solo 489 en
+  forma de diamante (filas de 7 a 25 celdas de ancho según la fila, ver
+  `ROW_SPANS`/`MASK` en `tools/generate_toy_icon.py` para la forma exacta, viene de
+  50.RemsGlyphToys). Los 17 glifos actuales no están recortados a esa forma, cualquier
+  detalle en las esquinas del lienzo no se va a ver en el hardware.
+- El brillo hacia la Glyph Matrix (`GlyphBitmapRenderer.renderToMatrixArray`) manda
+  cualquier celda no nula a brillo máximo (255), sin leer el color de paleta como
+  luminancia. El LED es monocromático, así que un color como el gris de contorno se
+  vería correcto en pantalla pero saldría tenue si se calculara por luminancia.
 - Widget de galería — imagen → matriz de puntos via average pooling
 - Historial de outfits y aprendizaje
 - Migrar dependencias al version catalog de Gradle

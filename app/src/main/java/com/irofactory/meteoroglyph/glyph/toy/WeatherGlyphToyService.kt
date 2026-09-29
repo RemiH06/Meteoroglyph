@@ -41,6 +41,7 @@ import kotlinx.coroutines.launch
 class WeatherGlyphToyService : Service() {
 
     private val tag = "WeatherGlyphToy"
+    private val MATRIX_SIZE = 25
     private val scope = CoroutineScope(Dispatchers.IO)
     private var refreshJob: Job? = null
 
@@ -107,16 +108,12 @@ class WeatherGlyphToyService : Service() {
 
     private fun showIcon() {
         val weather = lastWeather ?: return
-        val glyph = glyphRepo.getGlyph("weather", weather.condition.toGlyphName()) ?: return
-        val bitmap = GlyphBitmapRenderer.render(glyph, sizePx = 32, tintArgb = android.graphics.Color.WHITE)
-        renderObject(
-            GlyphMatrixObject.Builder()
-                .setImageSource(bitmap)
-                .setScale(100)
-                .setPosition(0, 0)
-                .setBrightness(255)
-                .build()
-        )
+        val glyph = glyphRepo.getGlyph("weather25x25", weather.condition.toGlyphName()) ?: return
+        try {
+            glyphMatrixManager?.setMatrixFrame(GlyphBitmapRenderer.renderToMatrixArray(glyph, MATRIX_SIZE))
+        } catch (e: GlyphException) {
+            Log.e(tag, "Error al dibujar glifo: ${e.message}")
+        }
     }
 
     private fun showTemperature() {
