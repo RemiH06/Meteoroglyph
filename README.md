@@ -8,7 +8,7 @@
  ██║╚██╔╝██║██╔══╝     ██║   ██╔══╝  ██║   ██║██╔══██╗██║   ██║██║    ╚██╔╝  ██╔═══╝ ██╔══██║
  ██║ ╚═╝ ██║███████╗   ██║   ███████╗╚██████╔╝██║  ██║╚██████╔╝███████╗██║   ██║     ██║  ██║
  ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝   ╚═╝     ╚═╝  ╚═╝
-        by Hex (@RemiH06) · iroFactory          version 2.0
+        by RemLam (@RemiH06) · iroFactory          version 2.0
 ```
 
 ![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)
@@ -190,6 +190,6 @@ Fonts (Ndot-57, NType82) are property of **Nothing Technology Limited**. Used wi
 
 ## License
 
-AGPL-3.0 © Hex (@RemiH06) · iroFactory
+AGPL-3.0 © RemLam (@RemiH06) · iroFactory
 
 This project's documentation is built on top of [metro_theme](https://github.com/RemiH06/metro_theme) (AGPL-3.0).
